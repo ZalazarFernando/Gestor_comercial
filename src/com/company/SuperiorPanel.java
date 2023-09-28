@@ -45,12 +45,32 @@ public class SuperiorPanel extends JPanel{
 		employee = new JButton("Employee");
         
 		add(employee);
+		
+		employee.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EmployeeWindow ew = new EmployeeWindow();
+				ew.setVisible(true);
+			}
+			
+		});
 	}
 	
 	public void createBtnSupplie() {
 		supplier = new JButton("Supplier");
 		
 		add(supplier);
+		
+		supplier.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			SupplierWindow sw = new SupplierWindow();
+			sw.setVisible(true);
+			}
+			
+		});
 	}
 	
 	public void createBtnRegister() {
