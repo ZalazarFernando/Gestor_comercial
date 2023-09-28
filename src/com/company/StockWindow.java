@@ -1,6 +1,7 @@
 package com.company;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -9,7 +10,8 @@ import java.util.List;
 import javax.swing.*;
 
 public class StockWindow extends JFrame{
-	JPanel panel;
+	private JPanel panel;
+	private JTabbedPane tabbedPane;
 	
 	public StockWindow() {
 		setSize(500, 300);
@@ -20,84 +22,111 @@ public class StockWindow extends JFrame{
 	
 	public void initialize() {
 		createPanel();
+		
 		createSpecificationTextBox();
 		createSearchTextBox();
-		createTabbedPane();
+		createTabPanel();
 		createListBtn();
 	}
 	
+	//main panel
 	public void createPanel() {
 		panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 2));
+		panel.setLayout(new BorderLayout());
 		
 		getContentPane().add(panel);
+		
+		createUpPanel();
+		createDownPanel();
 	}
-
+	
+	//two panels to main panel
+	private JPanel upPanel;
+	private JPanel downPanel;
+	
+	public void createUpPanel() {
+		upPanel = new JPanel();
+		upPanel.setLayout(new FlowLayout());
+		
+		panel.add(upPanel, BorderLayout.NORTH);
+	}
+	
+	public void createDownPanel() {
+		downPanel = new JPanel();
+		downPanel.setLayout(new FlowLayout());
+		
+		panel.add(downPanel, BorderLayout.SOUTH);
+	}
+	
+	//create panels within up panel
 	private void createSpecificationTextBox() {
 		JPanel panelTextBox = new JPanel();
-		panelTextBox.setLayout(new GridLayout(2,1));
+		panelTextBox.setLayout(new BoxLayout(panelTextBox, BoxLayout.Y_AXIS));
 		
 		JTextField brandTextBox = new JTextField();
-		JTextField SupplierTextBox = new JTextField();
+		brandTextBox.setPreferredSize(new Dimension(150, 30));
+
+		JTextField supplierTextBox = new JTextField();
+		supplierTextBox.setPreferredSize(new Dimension(150, 30));
 		
 		panelTextBox.add(brandTextBox);
-		panelTextBox.add(SupplierTextBox);
+		panelTextBox.add(supplierTextBox);
 		
-		panel.add(panelTextBox);
+		upPanel.add(panelTextBox);
 	}
 	
 	private void createSearchTextBox() {
 		JPanel panelSearch = new JPanel();
 		
-		JTextField searchTextBox = new JTextField(20);
+		JTextField searchTextBox = new JTextField();
+		searchTextBox.setPreferredSize(new Dimension(150, 30));
 		
 		panelSearch.add(searchTextBox);
 		
-		panel.add(panelSearch);
+		upPanel.add(panelSearch);
 	}
 	
-	public void createTabbedPane() {
+	//create panel within down panel
+	public void createTabPanel() {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
-		JPanel tab1 = new JPanel();
-		tab1.add(setElementList());
+		JPanel tabList1 = new JPanel();
+		tabList1.add(setElementList());
+		tabList1.setPreferredSize(new Dimension(150,150));
 		
-		tabbedPane.addTab("List", tab1);
-		
-		panel.add(tabbedPane);
+		tabbedPane.addTab("Meat", tabList1);
+		downPanel.add(tabbedPane);
 	}
 	
 	public void createListBtn() {
 		JPanel btnPanel = new JPanel();
-		btnPanel.setLayout(new GridLayout(5,1));
+		btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
 		
-		JButton btn1 = new JButton("test1");
-		JButton btn2 = new JButton("test1");
-		JButton btn3 = new JButton("test1");
-		JButton btn4 = new JButton("test1");
-		JButton btn5 = new JButton("test1");
+		JButton btn1 = new JButton("Add art.");
+		JButton btn2 = new JButton("Modify art.");
+		JButton btn3 = new JButton("Delete art.");
 		
 		btnPanel.add(btn1);
 		btnPanel.add(btn2);
 		btnPanel.add(btn3);
-		btnPanel.add(btn4);
-		btnPanel.add(btn5);
 		
-		panel.add(btnPanel);
+		downPanel.add(btnPanel);
 	}
 	
 	private JScrollPane setElementList() {
-		 List<String> files = new ArrayList<>();
-	        files.add("test1");
-	        files.add("test2");
-	        files.add("test3");
+		List<String> files = new ArrayList<>();
+        files.add("test1");
+        files.add("test2");
+        files.add("test3");
 
-	        // Crear una JList y agregar los elementos directamente desde la lista
-	        JList<String> filesList = new JList<>(files.toArray(new String[0]));
+        // Create a JList and add the elements directly from the list.
+        JList<String> filesList = new JList<>(files.toArray(new String[0]));
 
-	        // Agregar la JList a un JScrollPane
-	        JScrollPane scrollPane = new JScrollPane(filesList);
+        //Add the JList to a JScrollPane.
+        JScrollPane scrollPane = new JScrollPane(filesList);
+        
+        scrollPane.setPreferredSize(new Dimension(150,150));
 	        
-	     return(scrollPane);
+	    return(scrollPane);
 	}
 }
