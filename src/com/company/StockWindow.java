@@ -1,6 +1,7 @@
 package com.company;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -14,7 +15,8 @@ public class StockWindow extends JFrame{
 	private JTabbedPane tabbedPane;
 	
 	public StockWindow() {
-		setSize(500, 300);
+		setSize(700, 500);
+		setTitle("Articles");
 		setResizable(false);
 		
 		initialize();
@@ -41,61 +43,60 @@ public class StockWindow extends JFrame{
 	}
 	
 	//two panels to main panel
-	private JPanel upPanel;
-	private JPanel downPanel;
+	private JPanel rightPanel;
+	private JPanel leftPanel;
 	
 	public void createUpPanel() {
-		upPanel = new JPanel();
-		upPanel.setLayout(new FlowLayout());
+		rightPanel = new JPanel();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 		
-		panel.add(upPanel, BorderLayout.NORTH);
+		panel.add(rightPanel, BorderLayout.WEST);
 	}
 	
 	public void createDownPanel() {
-		downPanel = new JPanel();
-		downPanel.setLayout(new FlowLayout());
+		leftPanel = new JPanel();
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		
-		panel.add(downPanel, BorderLayout.SOUTH);
+		panel.add(leftPanel, BorderLayout.EAST);
 	}
 	
-	//create panels within up panel
+	//create panels within left panel
 	private void createSpecificationTextBox() {
 		JPanel panelTextBox = new JPanel();
 		panelTextBox.setLayout(new BoxLayout(panelTextBox, BoxLayout.Y_AXIS));
 		
 		JTextField brandTextBox = new JTextField();
-		brandTextBox.setPreferredSize(new Dimension(150, 30));
+		brandTextBox.setPreferredSize(new Dimension(150, 25));
 
 		JTextField supplierTextBox = new JTextField();
-		supplierTextBox.setPreferredSize(new Dimension(150, 30));
+		supplierTextBox.setPreferredSize(new Dimension(150, 25));
 		
 		panelTextBox.add(brandTextBox);
 		panelTextBox.add(supplierTextBox);
 		
-		upPanel.add(panelTextBox);
+		rightPanel.add(panelTextBox);
 	}
 	
-	private void createSearchTextBox() {
-		JPanel panelSearch = new JPanel();
-		
-		JTextField searchTextBox = new JTextField();
-		searchTextBox.setPreferredSize(new Dimension(150, 30));
-		
-		panelSearch.add(searchTextBox);
-		
-		upPanel.add(panelSearch);
-	}
-	
-	//create panel within down panel
 	public void createTabPanel() {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
 		JPanel tabList1 = new JPanel();
 		tabList1.add(setElementList());
-		tabList1.setPreferredSize(new Dimension(150,150));
 		
 		tabbedPane.addTab("Meat", tabList1);
-		downPanel.add(tabbedPane);
+		rightPanel.add(tabbedPane);
+	}
+	
+	//create panel within right panel
+	private void createSearchTextBox() {
+		JPanel panelSearch = new JPanel();
+		
+		JTextField searchTextBox = new JTextField();
+		searchTextBox.setPreferredSize(new Dimension(200, 25));
+		
+		panelSearch.add(searchTextBox);
+		
+		leftPanel.add(panelSearch);
 	}
 	
 	public void createListBtn() {
@@ -106,13 +107,22 @@ public class StockWindow extends JFrame{
 		JButton btn2 = new JButton("Modify art.");
 		JButton btn3 = new JButton("Delete art.");
 		
+		btn1.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btn2.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btn3.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+	    btn1.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn1.getMinimumSize().width));
+	    btn2.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn2.getMinimumSize().width));
+	    btn3.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn3.getMinimumSize().width));
+		
 		btnPanel.add(btn1);
 		btnPanel.add(btn2);
 		btnPanel.add(btn3);
 		
-		downPanel.add(btnPanel);
+		leftPanel.add(btnPanel);
 	}
 	
+	//method extra
 	private JScrollPane setElementList() {
 		List<String> files = new ArrayList<>();
         files.add("test1");
@@ -125,7 +135,7 @@ public class StockWindow extends JFrame{
         //Add the JList to a JScrollPane.
         JScrollPane scrollPane = new JScrollPane(filesList);
         
-        scrollPane.setPreferredSize(new Dimension(150,150));
+        scrollPane.setPreferredSize(new Dimension(450,400));
 	        
 	    return(scrollPane);
 	}
