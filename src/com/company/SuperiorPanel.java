@@ -77,5 +77,15 @@ public class SuperiorPanel extends JPanel{
 		register = new JButton("Register");
 		
 		add(register);
+		
+		register.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RegisterWindow rw = new RegisterWindow();
+				rw.setVisible(true);
+			}
+			
+		});
 	}
 }
