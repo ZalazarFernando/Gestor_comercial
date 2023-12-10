@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.DataBase.DataBaseManager;
 import com.company.WindowsActions.*;
 
 import java.awt.BorderLayout;
@@ -26,8 +27,11 @@ public class WindowArchetype extends JFrame{
 	protected ArrayList<JButton> btns;
 	protected Map<String, JTextField> listTextBox = new HashMap<>();
 	protected ArrayList<String> files;
+	protected DataBaseManager databaseManager;
 		
-		public WindowArchetype() {
+		public WindowArchetype(DataBaseManager databaseManager) {
+			this.databaseManager = databaseManager;
+			
 			setSize(700, 500);
 			setTitle("");
 			setResizable(false);

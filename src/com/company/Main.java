@@ -1,15 +1,17 @@
 package com.company;
 
-//import java.io.File;
-//import java.util.LinkedList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-//import javax.swing.*;
+import com.company.DataBase.DataBaseManager;
 
-import com.company.FirstFrame;
 
 public class Main {
     public static void main(String[] args) {
-        FirstFrame sp = new FirstFrame();
+    	DataBaseManager databaseManager = new DataBaseManager();
+    	
+        FirstFrame sp = new FirstFrame(databaseManager);
         sp.setVisible(true);
     }
 }

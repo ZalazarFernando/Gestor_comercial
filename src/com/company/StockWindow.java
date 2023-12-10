@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import com.company.DataBase.DataBaseManager;
 import com.company.WindowsActions.WindowsActionAdd;
 import com.company.WindowsActions.WindowsActionArchetype;
 import com.company.WindowsActions.WindowsActionDelete;
@@ -20,7 +21,8 @@ import com.company.WindowsActions.WindowsActionModify;
 public class StockWindow extends WindowArchetype{
 	private JTabbedPane tabbedPane;
 	
-	public StockWindow() {
+	public StockWindow(DataBaseManager databaseManager) {
+		super(databaseManager);
 		setSize(700, 500);
 		setTitle("Articles");
 		setResizable(false);

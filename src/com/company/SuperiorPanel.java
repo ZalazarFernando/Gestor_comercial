@@ -7,11 +7,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.company.DataBase.DataBaseManager;
+
 public class SuperiorPanel extends JPanel{
 	
 	private JButton stockButton, employee, supplier, register;
+	private DataBaseManager databaseManager;
 	
-	public SuperiorPanel(JPanel panel) {
+	public SuperiorPanel(JPanel panel, DataBaseManager databaseManager) {
+		this.databaseManager = databaseManager;
+		
 		setLayout(new FlowLayout());
 		
 		panel.add(this, BorderLayout.NORTH);
@@ -35,7 +40,7 @@ public class SuperiorPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				StockWindow sw = new StockWindow();
+				StockWindow sw = new StockWindow(databaseManager);
 				sw.setVisible(true);
 			}
 		});
@@ -50,7 +55,7 @@ public class SuperiorPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EmployeeWindow ew = new EmployeeWindow();
+				EmployeeWindow ew = new EmployeeWindow(databaseManager);
 				ew.setVisible(true);
 			}
 			
@@ -66,7 +71,7 @@ public class SuperiorPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			SupplierWindow sw = new SupplierWindow();
+			SupplierWindow sw = new SupplierWindow(databaseManager);
 			sw.setVisible(true);
 			}
 			
@@ -82,7 +87,7 @@ public class SuperiorPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RegisterWindow rw = new RegisterWindow();
+				RegisterWindow rw = new RegisterWindow(databaseManager);
 				rw.setVisible(true);
 			}
 			

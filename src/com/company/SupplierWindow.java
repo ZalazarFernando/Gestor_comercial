@@ -7,13 +7,15 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import com.company.DataBase.DataBaseManager;
 import com.company.WindowsActions.WindowsActionAdd;
 import com.company.WindowsActions.WindowsActionDelete;
 import com.company.WindowsActions.WindowsActionModify;
 
 public class SupplierWindow extends WindowArchetype{
 
-	public SupplierWindow() {
+	public SupplierWindow(DataBaseManager databaseManager) {
+		super(databaseManager);
 		setSize(700, 500);
 		setTitle("Supplier");
 		setResizable(false);

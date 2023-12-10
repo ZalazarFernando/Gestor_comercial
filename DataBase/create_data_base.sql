@@ -1,0 +1,3 @@
+-- Active: 1702062893216@@127.0.0.1@3306
+CREATE DATABASE GestorComercial
+    DEFAULT CHARACTER SET = 'utf8mb4';

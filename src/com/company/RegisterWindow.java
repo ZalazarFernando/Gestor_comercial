@@ -8,9 +8,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.company.DataBase.DataBaseManager;
+
 public class RegisterWindow extends WindowArchetype{
 	
-	public RegisterWindow() {
+	public RegisterWindow(DataBaseManager databaseManager) {
+		super(databaseManager);
 		setSize(700, 500);
 		setTitle("Register");
 		setResizable(false);
