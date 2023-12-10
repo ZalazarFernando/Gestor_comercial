@@ -96,7 +96,17 @@ public class EmployeeWindow extends WindowArchetype{
 	protected JScrollPane setElementList() {
 		JScrollPane scrollPane = null;
 		
-		ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable();
+		//get data
+		String[] array = {
+				"ID",
+				"Name_Employee",
+				"Lastname_Employee",
+				"Email_Address",
+				"Number_Phone",
+				"Salary",
+				"Rol"
+			 };
+		ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(array);
 		 
         ArrayList<String> auxFilesList = new ArrayList<String>();
         

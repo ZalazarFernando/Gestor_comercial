@@ -43,7 +43,7 @@ public class DataBaseManager {
         }
     }
     
-    public ArrayList<ArrayList> getAllInfoTable() {
+    public ArrayList<ArrayList> getAllInfoTable(String[] data) {
     	String query = "SELECT * FROM employee";
     	
     	ArrayList<ArrayList> infoAllEmployee = new ArrayList<ArrayList>();
@@ -52,24 +52,33 @@ public class DataBaseManager {
              ResultSet resultSet = statement.executeQuery(query)) {
         	
             while (resultSet.next()) {
-            	
+            	String[] getInfo = new String[data.length];
                 // Obtén los datos de cada fila
-                int id = resultSet.getInt("ID");
+            	for (int i = 0; i < getInfo.length; i++) {
+            		getInfo[i] = resultSet.getString(data[i]);
+            	}
+            	
+                /*String id = resultSet.getString("ID");
                 String name = resultSet.getString("Name_Employee");
                 String lastName = resultSet.getString("Lastname_Employee");
                 String emailAddress = resultSet.getString("Email_Address");
                 String numberPhone = resultSet.getString("Number_Phone");
                 String salary = resultSet.getString("Salary");
-                String rol = resultSet.getString("Rol");
-
-                ArrayList<String> infoEmployee = new ArrayList<String>();
+                String rol = resultSet.getString("Rol");*/
+            	
+            	ArrayList<String> infoEmployee = new ArrayList<String>();
+            	for (int i = 0; i < getInfo.length; i++) {
+            		infoEmployee.add(getInfo[i]);
+            	}
+            	
+                /*ArrayList<String> infoEmployee = new ArrayList<String>();
                 infoEmployee.add(String.valueOf(id));
                 infoEmployee.add(name);
                 infoEmployee.add(lastName);
                 infoEmployee.add(emailAddress);
                 infoEmployee.add(numberPhone);
                 infoEmployee.add(salary);
-                infoEmployee.add(rol);
+                infoEmployee.add(rol);*/
                 
                 infoAllEmployee.add(infoEmployee);
             }
