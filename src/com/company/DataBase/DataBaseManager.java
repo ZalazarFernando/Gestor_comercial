@@ -41,10 +41,18 @@ public class DataBaseManager {
         }
     }
     
-    public ArrayList<ArrayList> getAllInfoTable(String[] data) {
-    	String query = "SELECT * FROM employee";
+    public String createQuery(String typeQuery, String data, String principalTable, String innerJoinTables) {
+    	if(innerJoinTables == null) {
+    		return typeQuery + " " + data + " FROM " + principalTable;
+    	} else {
+    		return typeQuery + " " + data + " FROM " + principalTable + " " + innerJoinTables;
+    	}
+    }
+    
+    public ArrayList<ArrayList> getAllInfoTable(String[] data, String createdQuery) {
+    	String query = createdQuery;
     	
-    	ArrayList<ArrayList> infoAllEmployee = new ArrayList<ArrayList>();
+    	ArrayList<ArrayList> infoAll = new ArrayList<ArrayList>();
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -64,9 +72,9 @@ public class DataBaseManager {
                 String salary = resultSet.getString("Salary");
                 String rol = resultSet.getString("Rol");*/
             	
-            	ArrayList<String> infoEmployee = new ArrayList<String>();
+            	ArrayList<String> info = new ArrayList<String>();
             	for (int i = 0; i < getInfo.length; i++) {
-            		infoEmployee.add(getInfo[i]);
+            		info.add(getInfo[i]);
             	}
             	
                 /*ArrayList<String> infoEmployee = new ArrayList<String>();
@@ -78,12 +86,12 @@ public class DataBaseManager {
                 infoEmployee.add(salary);
                 infoEmployee.add(rol);*/
                 
-                infoAllEmployee.add(infoEmployee);
+            	infoAll.add(info);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-		return infoAllEmployee;
+		return infoAll;
     }
 }

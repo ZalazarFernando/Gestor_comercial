@@ -27,8 +27,8 @@ CREATE TABLE Working_hours(
 
 CREATE TABLE Supplier(
     ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name_Employee VARCHAR(20) NOT NULL,
-    Lastname_Employee VARCHAR(20) NOT NULL,
+    Name_Supplier VARCHAR(20) NOT NULL,
+    Lastname_Supplier VARCHAR(20) NOT NULL,
     Email_Address VARCHAR(50) NOT NULL,
     Number_Phone VARCHAR(10) NOT NULL,
     Type_Products VARCHAR(40) NOT NULL

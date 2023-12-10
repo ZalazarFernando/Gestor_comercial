@@ -1,11 +1,17 @@
 package com.company;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
 import com.company.WindowsActions.WindowsActionAdd;
@@ -78,5 +84,62 @@ public class SupplierWindow extends WindowArchetype{
 				wad.setVisible(true);
 			}
 		});
+	}
+
+	@Override
+	protected JScrollPane setElementList() {
+		//modificar para mostrar marcas
+		String[] columnNames = {
+	            "ID",
+	            "Name_Supplier",
+	            "Lastname_Supplier",
+	            "Email_Address",
+	            "Number_Phone",
+	            "Type_Products"
+	    };
+
+	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(
+	    		columnNames, 
+	    		this.databaseManager.createQuery(
+	    				"SELECT",
+	    				columnNames[0] + ", " 
+	    	    		+ columnNames[1] + ", " 
+	    	    		+ columnNames[2] + ", " 
+	    	    		+ columnNames[3] + ", "
+	    	    		+ columnNames[4] + ", "
+	    	    		+ columnNames[5], 
+	    				"Supplier", 
+	    				null)
+	    		);
+	    
+	    String[] columnNamesToTable = {
+	            "ID",
+	            "Name",
+	            "Lastname",
+	            "Email",
+	            "Number Phone",
+	            "Type"
+	    };
+	    
+	    // Crear un modelo de tabla
+	    DefaultTableModel tableModel = new DefaultTableModel();
+	    
+	    // Añadir nombres de columnas al modelo
+	    Arrays.stream(columnNamesToTable).forEach(tableModel::addColumn);
+
+	    // Añadir filas al modelo
+	    infoAllEmployee.forEach(listOfFields -> {
+	        Object[] rowData = listOfFields.toArray();
+	        tableModel.addRow(rowData);
+	    });
+
+	    // Crear JTable con el modelo
+	    JTable jTable = new JTable(tableModel);
+
+	    // Crear JScrollPane con el JTable
+	    JScrollPane scrollPane = new JScrollPane(jTable);
+	    scrollPane.setPreferredSize(new Dimension(450, 500));
+
+	    return scrollPane;
 	}
 }

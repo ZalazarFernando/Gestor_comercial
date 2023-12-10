@@ -107,7 +107,20 @@ public class EmployeeWindow extends WindowArchetype{
 	            "Rol"
 	    };
 
-	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(columnNames);
+	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(
+	    		columnNames,
+	    		this.databaseManager.createQuery(
+	    				"SELECT", 
+	    				columnNames[0] + ", " 
+	    				+ columnNames[1] + ", "
+	    				+ columnNames[2] + ", "
+	    				+ columnNames[3] + ", "
+	    				+ columnNames[4] + ", "
+	    				+ columnNames[5] + ", "
+	    				+ columnNames[6], 
+	    				"Employee", 
+	    				null)
+	    		);
 	    
 	    String[] columnNamesToTable = {
 	            "ID",
@@ -140,6 +153,4 @@ public class EmployeeWindow extends WindowArchetype{
 
 	    return scrollPane;
 	}
-	
-	
 }
