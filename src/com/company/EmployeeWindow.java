@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
@@ -13,6 +14,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
 import com.company.WindowsActions.WindowsActionAdd;
@@ -94,38 +97,48 @@ public class EmployeeWindow extends WindowArchetype{
 
 	@Override
 	protected JScrollPane setElementList() {
-		JScrollPane scrollPane = null;
-		
-		//get data
-		String[] array = {
-				"ID",
-				"Name_Employee",
-				"Lastname_Employee",
-				"Email_Address",
-				"Number_Phone",
-				"Salary",
-				"Rol"
-			 };
-		ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(array);
-		 
-        ArrayList<String> auxFilesList = new ArrayList<String>();
-        
-        for (ArrayList<String> listOfFields : infoAllEmployee) {
-        	String auxText = "";
-        	for (String field : listOfFields) {
-        		auxText += " " + String.valueOf(field);
-        	}
-        	auxFilesList.add(auxText);
-		}
-        
-        JList filesList = new JList<>(auxFilesList.toArray(new String[0]));
+		String[] columnNames = {
+	            "ID",
+	            "Name_Employee",
+	            "Lastname_Employee",
+	            "Email_Address",
+	            "Number_Phone",
+	            "Salary",
+	            "Rol"
+	    };
 
-        //Add the JList to a JScrollPane.
-        scrollPane = new JScrollPane(filesList);
-        
-        scrollPane.setPreferredSize(new Dimension(450,500));
-        
-		return scrollPane;
+	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(columnNames);
+	    
+	    String[] columnNamesToTable = {
+	            "ID",
+	            "Name",
+	            "Lastname",
+	            "Email",
+	            "Number Phone",
+	            "Salary",
+	            "Rol"
+	    };
+	    
+	    // Crear un modelo de tabla
+	    DefaultTableModel tableModel = new DefaultTableModel();
+	    
+	    // Añadir nombres de columnas al modelo
+	    Arrays.stream(columnNamesToTable).forEach(tableModel::addColumn);
+
+	    // Añadir filas al modelo
+	    infoAllEmployee.forEach(listOfFields -> {
+	        Object[] rowData = listOfFields.toArray();
+	        tableModel.addRow(rowData);
+	    });
+
+	    // Crear JTable con el modelo
+	    JTable jTable = new JTable(tableModel);
+
+	    // Crear JScrollPane con el JTable
+	    JScrollPane scrollPane = new JScrollPane(jTable);
+	    scrollPane.setPreferredSize(new Dimension(450, 500));
+
+	    return scrollPane;
 	}
 	
 	

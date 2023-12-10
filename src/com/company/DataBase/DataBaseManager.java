@@ -21,10 +21,8 @@ public class DataBaseManager {
     public DataBaseManager() {
     	try {
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión a la base de datos establecida");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error al conectar a la base de datos");
         }
     }
 
