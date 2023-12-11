@@ -57,18 +57,74 @@ public class EmployeeWindow extends WindowArchetype{
 		
 		rightPanel.add(panelTextBox);
 	}
-	
+
 	@Override
 	protected void addActionBtn() {
 		btns.get(0).addActionListener(new ActionListener() {
-			
+			public void refreshPanel() {
+				articleList.removeAll();
+				articleList.revalidate();
+				articleList.repaint();
+			}
+			//Search by name and workstation
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!listTextBox.get("Name").getText().equals("Name") &&
+						listTextBox.get("Workstation").getText().equals("Workstation")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+								"WHERE Name_Employee = '"
+								+ listTextBox.get("Name").getText()
+								+ "'"
+							)
+						);
+				} else if (!listTextBox.get("Workstation").getText().equals("Workstation") &&
+								listTextBox.get("Name").getText().equals("Name")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+								"WHERE Rol = '"
+								+ listTextBox.get("Workstation").getText()
+								+ "'"
+							)
+						);
+				}
+				else if (!listTextBox.get("Workstation").getText().equals("Workstation") &&
+							!listTextBox.get("Name").getText().equals("Name")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+								"WHERE "
+								+ "Name_Employee = '"
+								+ listTextBox.get("Name").getText()
+								+ "'"
+								+ " AND "
+								+ "Rol = '"
+								+ listTextBox.get("Workstation").getText()
+								+ "'"
+							)
+							);
+					}else {
+						refreshPanel();
+						articleList.add(
+								setElementList(
+									null
+								)
+							);
+					}
+			} 
+		});
+		
+		btns.get(1).addActionListener(new ActionListener() {
+			//open add windows
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] words = {
 						"Name",
 						"Lastname",
 						"DNI",
-						"Department",
+						"Rol",
 						"Phone",
 						"Email"};
 				
@@ -77,16 +133,16 @@ public class EmployeeWindow extends WindowArchetype{
 			}
 		});
 		
-		btns.get(1).addActionListener(new ActionListener() {
-			
+		btns.get(2).addActionListener(new ActionListener() {
+			//open modify window
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				WindowsActionModify wam = new WindowsActionModify();
 				wam.setVisible(true);
 			}
 		});
-		btns.get(2).addActionListener(new ActionListener() {
-			
+		btns.get(3).addActionListener(new ActionListener() {
+			//open delete windows
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				WindowsActionDelete wad = new WindowsActionDelete();
@@ -96,7 +152,7 @@ public class EmployeeWindow extends WindowArchetype{
 	}
 
 	@Override
-	protected JScrollPane setElementList() {
+	protected JScrollPane setElementList(String queryExtra) {
 		String[] columnNames = {
 	            "ID",
 	            "Name_Employee",
@@ -119,7 +175,7 @@ public class EmployeeWindow extends WindowArchetype{
 	    				+ columnNames[5] + ", "
 	    				+ columnNames[6], 
 	    				"Employee", 
-	    				null)
+	    				queryExtra)
 	    		);
 	    
 	    String[] columnNamesToTable = {

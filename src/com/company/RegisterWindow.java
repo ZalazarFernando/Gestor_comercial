@@ -61,6 +61,7 @@ public class RegisterWindow extends WindowArchetype{
 		
 		btns = new ArrayList<JButton>();
 		
+		btns.add(new JButton("Search"));
 		btns.add(new JButton("Invoice"));//factura
 		btns.add(new JButton("Delivery note"));//Remito
 		btns.add(new JButton("Receipt"));//Recibo
@@ -79,7 +80,7 @@ public class RegisterWindow extends WindowArchetype{
 	}
 	
 	@Override
-	protected JScrollPane setElementList() {
+	protected JScrollPane setElementList(String queryExtra) {
 		String[] columnNames = {
 	            "List_Receipt.ID",
 	            "Receipt.Description_List",

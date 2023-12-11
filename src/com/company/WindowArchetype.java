@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public class WindowArchetype extends JFrame{
 	protected Map<String, JTextField> listTextBox = new HashMap<>();
 	protected ArrayList<String> files;
 	protected DataBaseManager databaseManager;
+	
+	protected JPanel articleList = new JPanel();
 		
 		public WindowArchetype(DataBaseManager databaseManager) {
 			this.databaseManager = databaseManager;
@@ -44,7 +48,7 @@ public class WindowArchetype extends JFrame{
 			
 			createSpecificationTextBox();
 			createSearchTextBox();
-			createTabPanel();
+			createTabPanel(null);
 			createListBtn();
 		}
 		
@@ -90,9 +94,9 @@ public class WindowArchetype extends JFrame{
 			rightPanel.add(panelTextBox);
 		}
 		
-		protected void createTabPanel() {
-			JPanel articleList = new JPanel();
-			articleList.add(setElementList());
+		protected void createTabPanel(String queryExtra) {
+			;
+			articleList.add(setElementList(null));
 			
 			rightPanel.add(articleList);
 		}
@@ -115,11 +119,10 @@ public class WindowArchetype extends JFrame{
 			
 			btns = new ArrayList<JButton>();
 			
+			btns.add(new JButton("Search"));
 			btns.add(new JButton("Add"));
 			btns.add(new JButton("Modify"));
 			btns.add(new JButton("Delete"));
-			
-			addActionBtn();
 			
 			for(int i=0; i<btns.size(); i++) {
 				addPreferencesBtn(btns.get(i));
@@ -130,6 +133,8 @@ public class WindowArchetype extends JFrame{
 			}
 			
 			leftPanel.add(btnPanel);
+			
+			addActionBtn();
 		}
 		
 		//method extra
@@ -142,7 +147,7 @@ public class WindowArchetype extends JFrame{
 			btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getMinimumSize().width));
 		}
 		
-		protected JScrollPane setElementList() {
+		protected JScrollPane setElementList(String queryExtra) {
 			files = new ArrayList<>();
 	        files.add("test1");
 	        files.add("test2");
@@ -156,7 +161,7 @@ public class WindowArchetype extends JFrame{
 	        
 	        scrollPane.setPreferredSize(new Dimension(450,500));
 		        
-		    return(scrollPane);
+		    return scrollPane;
 		}
 		
 		protected JTextField createAutoTextBox(String name) {

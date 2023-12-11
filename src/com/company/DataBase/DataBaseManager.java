@@ -41,11 +41,11 @@ public class DataBaseManager {
         }
     }
     
-    public String createQuery(String typeQuery, String data, String principalTable, String innerJoinTables) {
-    	if(innerJoinTables == null) {
+    public String createQuery(String typeQuery, String data, String principalTable, String extraQuery) {
+    	if(extraQuery == null) {
     		return typeQuery + " " + data + " FROM " + principalTable;
     	} else {
-    		return typeQuery + " " + data + " FROM " + principalTable + " " + innerJoinTables;
+    		return typeQuery + " " + data + " FROM " + principalTable + " " + extraQuery;
     	}
     }
     

@@ -1,4 +1,5 @@
 USE gestorcomercial;
+
 CREATE TABLE Employee(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Name_Employee VARCHAR(20) NOT NULL,

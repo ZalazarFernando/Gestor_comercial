@@ -54,7 +54,7 @@ public class SupplierWindow extends WindowArchetype{
 	
 	@Override
 	protected void addActionBtn() {
-		btns.get(0).addActionListener(new ActionListener() {
+		btns.get(1).addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -68,7 +68,7 @@ public class SupplierWindow extends WindowArchetype{
 			}
 		});
 		
-		btns.get(1).addActionListener(new ActionListener() {
+		btns.get(2).addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -76,7 +76,7 @@ public class SupplierWindow extends WindowArchetype{
 				wam.setVisible(true);
 			}
 		});
-		btns.get(2).addActionListener(new ActionListener() {
+		btns.get(3).addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,7 +87,7 @@ public class SupplierWindow extends WindowArchetype{
 	}
 
 	@Override
-	protected JScrollPane setElementList() {
+	protected JScrollPane setElementList(String queryExtra) {
 		//modificar para mostrar marcas
 		String[] columnNames = {
 	            "ID",

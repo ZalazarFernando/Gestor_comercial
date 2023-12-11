@@ -21,7 +21,6 @@ import com.company.WindowsActions.WindowsActionDelete;
 import com.company.WindowsActions.WindowsActionModify;
 
 public class StockWindow extends WindowArchetype{
-	private JTabbedPane tabbedPane;
 	
 	public StockWindow(DataBaseManager databaseManager) {
 		super(databaseManager);
@@ -49,7 +48,7 @@ public class StockWindow extends WindowArchetype{
 		JPanel panelTextBox = new JPanel();
 		panelTextBox.setLayout(new BoxLayout(panelTextBox, BoxLayout.Y_AXIS));
 		
-		String[] namesText = {"Type","Supplier","Brand"};
+		String[] namesText = {"Type","Brand"};
 		for(int i=0; i<namesText.length ; i++) {
 			panelTextBox.add(createAutoTextBox(namesText[i]));
 		}
@@ -60,6 +59,62 @@ public class StockWindow extends WindowArchetype{
 	@Override
 	protected void addActionBtn() {
 		btns.get(0).addActionListener(new ActionListener() {
+			public void refreshPanel() {
+				articleList.removeAll();
+				articleList.revalidate();
+				articleList.repaint();
+			}
+			//Search by name and workstation
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!listTextBox.get("Name").getText().equals("Name") &&
+						listTextBox.get("Workstation").getText().equals("Workstation")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+								"WHERE Name_Employee = '"
+								+ listTextBox.get("Name").getText()
+								+ "'"
+							)
+						);
+				} else if (!listTextBox.get("Workstation").getText().equals("Workstation") &&
+								listTextBox.get("Name").getText().equals("Name")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+								"WHERE Rol = '"
+								+ listTextBox.get("Workstation").getText()
+								+ "'"
+							)
+						);
+				}
+				else if (!listTextBox.get("Workstation").getText().equals("Workstation") &&
+							!listTextBox.get("Name").getText().equals("Name")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+								"WHERE "
+								+ "Name_Employee = '"
+								+ listTextBox.get("Name").getText()
+								+ "'"
+								+ " AND "
+								+ "Rol = '"
+								+ listTextBox.get("Workstation").getText()
+								+ "'"
+							)
+							);
+					}else {
+						refreshPanel();
+						articleList.add(
+								setElementList(
+									null
+								)
+							);
+					}
+			} 
+		});
+		
+		btns.get(1).addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] words = {
@@ -76,7 +131,7 @@ public class StockWindow extends WindowArchetype{
 				waa.setVisible(true);
 			}
 		});
-		btns.get(1).addActionListener(new ActionListener() {
+		btns.get(2).addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -84,7 +139,7 @@ public class StockWindow extends WindowArchetype{
 				wam.setVisible(true);
 			}
 		});
-		btns.get(2).addActionListener(new ActionListener() {
+		btns.get(3).addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,7 +150,7 @@ public class StockWindow extends WindowArchetype{
 	}
 
 	@Override
-	protected JScrollPane setElementList() {
+	protected JScrollPane setElementList(String queryExtra) {
 		String[] columnNames = {
 	            "ID",
 	            "Name_Product",
