@@ -3,6 +3,8 @@ package com.company.WindowsActions;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
@@ -12,18 +14,25 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.company.DataBase.DataBaseManager;
 
 public class WindowsActionAdd extends WindowsActionArchetype{
 	protected List<String> wordOfAssistance = new ArrayList<String>();
 	
-	public WindowsActionAdd() {
-		super();
+	
+	
+	public WindowsActionAdd(DataBaseManager databaseManager) {
+		super(databaseManager, "");
 	}
 	
-	public WindowsActionAdd(String[] words) {
-		super();
+	public WindowsActionAdd(String[] words, DataBaseManager databaseManager, String table) {
+		super(databaseManager, table);
+		
+		
 		setTitle("Add article");
 		Initialize(words);
 	}
@@ -97,6 +106,41 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 		}
 	}
 	
+	@Override
+	protected void addActionDoneBtn(JButton btn) {
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!addTextBox.get("Name").getText().equals("Name") &&
+						!addTextBox.get("Lastname").getText().equals("lastname") &&
+						!addTextBox.get("Rol").getText().equals("Rol") &&
+						!addTextBox.get("Phone").getText().equals("Phone") &&
+						!addTextBox.get("Email").getText().equals("Email") &&
+						!addTextBox.get("Salary").getText().equals("Salary")) {
+					
+						ArrayList<String> auxData = new ArrayList<String>();
+						
+						auxData.add(addTextBox.get("Name").getText());
+						auxData.add(addTextBox.get("Lastname").getText());
+						auxData.add(addTextBox.get("Email").getText());
+						auxData.add(addTextBox.get("Phone").getText());
+						auxData.add(addTextBox.get("Salary").getText());
+						auxData.add(addTextBox.get("Rol").getText());
+						
+						databaseManager.setAllInfoTable(
+								auxData.toArray(new String[0]),
+								databaseManager.createQuery(
+										"INSERT INTO",
+										"?, ?, ?, ?, ?, ?",
+										preTable,
+										"Name_Employee, Lastname_Employee,"
+										+ "Email_Address, Number_Phone, Salary, Rol")
+								);
+					}
+			}
+			
+		});
+	}
+
 	//getters and setters
 	public List getWordOfAssistance() {
 		return wordOfAssistance;

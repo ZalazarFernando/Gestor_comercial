@@ -123,12 +123,12 @@ public class EmployeeWindow extends WindowArchetype{
 				String[] words = {
 						"Name",
 						"Lastname",
-						"DNI",
 						"Rol",
 						"Phone",
-						"Email"};
+						"Email",
+						"Salary"};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words);
+				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Employee");
 				waa.setVisible(true);
 			}
 		});
@@ -137,7 +137,7 @@ public class EmployeeWindow extends WindowArchetype{
 			//open modify window
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionModify wam = new WindowsActionModify();
+				WindowsActionModify wam = new WindowsActionModify(databaseManager);
 				wam.setVisible(true);
 			}
 		});
@@ -145,7 +145,7 @@ public class EmployeeWindow extends WindowArchetype{
 			//open delete windows
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionDelete wad = new WindowsActionDelete();
+				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Employee");
 				wad.setVisible(true);
 			}
 		});

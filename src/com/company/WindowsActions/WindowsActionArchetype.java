@@ -16,11 +16,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.company.DataBase.DataBaseManager;
+
 public class WindowsActionArchetype extends JFrame{
 	protected JPanel mainPanel;
 	protected Map<String, JTextField> addTextBox = new HashMap<>();
 	
-	public WindowsActionArchetype() {
+	protected DataBaseManager databaseManager;
+	protected String preTable;
+	
+	public WindowsActionArchetype(DataBaseManager databaseManager, String table) {
+		this.databaseManager = databaseManager;
+		
+		preTable = table;
+		
 		setSize(400,200);
 		setTitle("");
 		setResizable(false);
@@ -67,12 +76,24 @@ public class WindowsActionArchetype extends JFrame{
 		JButton doneBtn = new JButton("Done");
 		
 		downPanel.add(doneBtn, BorderLayout.EAST);
+		
+		addActionDoneBtn(doneBtn);
+	}
+	
+	protected void addActionDoneBtn(JButton btn) {
+		
 	}
 	
 	protected void createCancelBtn() {
 		JButton cancelBtn = new JButton("Cancel");
 		
 		downPanel.add(cancelBtn, BorderLayout.WEST);
+		
+		addActionCancelBtn(cancelBtn);
+	}
+	
+	protected void addActionCancelBtn(JButton btn) {
+		
 	}
 	
 	//method extra

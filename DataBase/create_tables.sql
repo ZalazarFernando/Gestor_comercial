@@ -10,6 +10,9 @@ CREATE TABLE Employee(
     ID_Supervised INT
 );
 
+SELECT *
+FROM Employee
+
 ALTER TABLE Employee
 ADD CONSTRAINT fk_employee_supervised
 FOREIGN KEY (ID_Supervised) REFERENCES Employee(ID);

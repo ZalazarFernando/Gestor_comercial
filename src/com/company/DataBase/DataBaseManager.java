@@ -8,6 +8,7 @@ import javax.swing.JList;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -42,11 +43,52 @@ public class DataBaseManager {
     }
     
     public String createQuery(String typeQuery, String data, String principalTable, String extraQuery) {
+    	if(typeQuery == "SELECT") {
+    		return createSelectQuery(typeQuery, data, principalTable, extraQuery);
+    	} else if (typeQuery == "INSERT INTO") {
+    		return createInsertQuery(typeQuery, data, principalTable, extraQuery);
+    	} else {
+    		return "";
+    	}
+    }
+    
+    private String createInsertQuery(String typeQuery, String data, String principalTable, String extraQuery) {
+    		return typeQuery + " " + principalTable + " (" + extraQuery + ") " + "VALUES" + " (" + data + ")";
+    }
+    
+    private String createSelectQuery(String typeQuery, String data, String principalTable, String extraQuery) {
     	if(extraQuery == null) {
     		return typeQuery + " " + data + " FROM " + principalTable;
     	} else {
     		return typeQuery + " " + data + " FROM " + principalTable + " " + extraQuery;
     	}
+    }
+    
+    public void setAllInfoTable(String[] data, String createdQuery) {
+    	String query = createdQuery;
+    	
+    	try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Establecer los valores de los parámetros
+            preparedStatement.setString(1, data[0]);
+            preparedStatement.setString(2, data[1]);
+            preparedStatement.setString(3, data[2]);
+            preparedStatement.setString(4, data[3]);
+            preparedStatement.setString(5, data[4]);
+            preparedStatement.setString(6, data[5]);
+
+            // Ejecutar la consulta
+            int filasAfectadas = preparedStatement.executeUpdate();
+
+            // Verificar si se insertaron filas
+            if (filasAfectadas > 0) {
+                System.out.println("Se insertaron " + filasAfectadas + " filas correctamente.");
+            } else {
+                System.out.println("No se insertaron filas.");
+            }
+        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
     }
     
     public ArrayList<ArrayList> getAllInfoTable(String[] data, String createdQuery) {

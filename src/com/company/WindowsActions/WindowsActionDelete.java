@@ -4,9 +4,11 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 
+import com.company.DataBase.DataBaseManager;
+
 public class WindowsActionDelete extends WindowsActionArchetype {
-	public WindowsActionDelete() {
-		super();
+	public WindowsActionDelete(DataBaseManager databaseManager, String table) {
+		super(databaseManager, table);
 		
 		setTitle("Delete article");
 		

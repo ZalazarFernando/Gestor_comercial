@@ -160,7 +160,7 @@ public class StockWindow extends WindowArchetype{
 						"Final price",
 						"Discount"};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words);
+				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Product");
 				waa.setVisible(true);
 			}
 		});
@@ -168,7 +168,7 @@ public class StockWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionModify wam = new WindowsActionModify();
+				WindowsActionModify wam = new WindowsActionModify(databaseManager);
 				wam.setVisible(true);
 			}
 		});
@@ -176,7 +176,7 @@ public class StockWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionDelete wad = new WindowsActionDelete();
+				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Product");
 				wad.setVisible(true);
 			}
 		});

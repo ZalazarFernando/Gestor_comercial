@@ -59,11 +59,13 @@ public class SupplierWindow extends WindowArchetype{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] words = {
-						"legal name",
-						"CUIT",
-						"Address"};
+						"Name",
+						"Lastname",
+						"Email",
+						"Phone",
+						"Type"};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words);
+				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Supplier");
 				waa.setVisible(true);
 			}
 		});
@@ -72,7 +74,7 @@ public class SupplierWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionModify wam = new WindowsActionModify();
+				WindowsActionModify wam = new WindowsActionModify(databaseManager);
 				wam.setVisible(true);
 			}
 		});
@@ -80,7 +82,7 @@ public class SupplierWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionDelete wad = new WindowsActionDelete();
+				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Supplier");
 				wad.setVisible(true);
 			}
 		});
