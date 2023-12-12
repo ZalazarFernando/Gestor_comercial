@@ -37,7 +37,7 @@ CREATE TABLE Supplier(
 
 CREATE TABLE Brand(
     ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name_Employee VARCHAR(20) NOT NULL,
+    Name_Brand VARCHAR(20) NOT NULL,
     Type_Products VARCHAR(40) NOT NULL,
     Description_Brand VARCHAR(100)
 );
