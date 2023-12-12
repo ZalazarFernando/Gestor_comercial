@@ -48,7 +48,7 @@ public class WindowArchetype extends JFrame{
 			
 			createSpecificationTextBox();
 			createSearchTextBox();
-			createTabPanel(null);
+			createTabPanel();
 			createListBtn();
 		}
 		
@@ -94,8 +94,7 @@ public class WindowArchetype extends JFrame{
 			rightPanel.add(panelTextBox);
 		}
 		
-		protected void createTabPanel(String queryExtra) {
-			;
+		protected void createTabPanel() {
 			articleList.add(setElementList(null));
 			
 			rightPanel.add(articleList);

@@ -2,6 +2,8 @@ package com.company;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,11 +23,7 @@ public class RegisterWindow extends WindowArchetype{
 		setSize(700, 500);
 		setTitle("Register");
 		setResizable(false);
-		
-		initialize();
 	}
-	
-	
 
 	@Override
 	protected void createSearchTextBox() {
@@ -76,13 +74,107 @@ public class RegisterWindow extends WindowArchetype{
 		
 		leftPanel.add(btnPanel);
 		
-		leftPanel.add(btnPanel);
+		addActionBtn();
 	}
 	
+	@Override
+	protected void addActionBtn() {
+		btns.get(0).addActionListener(new ActionListener() {
+			
+			public void refreshPanel() {
+				articleList.removeAll();
+				articleList.revalidate();
+				articleList.repaint();
+			}
+			//Search by name and others
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!listTextBox.get("Customer").getText().equals("Customer") &&
+						listTextBox.get("Date").getText().equals("Date") &&
+						listTextBox.get("Type").getText().equals("Type")) {
+					
+					refreshPanel();
+					
+					articleList.add(
+							setElementList(
+								" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
+			    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
+			    				+ "INNER JOIN Product ON Product.ID = Product_x_Receipt.ID_Product "
+								+ "WHERE List_Receipt.Customer = '"
+								+ listTextBox.get("Customer").getText()
+								+ "'"
+							)
+						);
+				} else if (listTextBox.get("Customer").getText().equals("Customer") &&
+							!listTextBox.get("Date").getText().equals("Date") &&
+							listTextBox.get("Type").getText().equals("Type")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+								" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
+			    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
+			    				+ "INNER JOIN Product ON Product.ID = Product_x_Receipt.ID_Product "
+								+ "WHERE List_Receipt.Date_Receipt = '"
+								+ listTextBox.get("Date").getText()
+								+ "'"
+							)
+						);
+				} else if (listTextBox.get("Customer").getText().equals("Customer") &&
+							listTextBox.get("Date").getText().equals("Date") &&
+							!listTextBox.get("Type").getText().equals("Type")) {
+				refreshPanel();
+				articleList.add(
+						setElementList(
+							" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
+		    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
+		    				+ "INNER JOIN Product ON Product.ID = Product_x_Receipt.ID_Product "
+							+ "WHERE List_Receipt.Type_Receipt = '"
+							+ listTextBox.get("Type").getText()
+							+ "'"
+						)
+					);
+			}
+				else if (!listTextBox.get("Customer").getText().equals("Customer") &&
+						!listTextBox.get("Date").getText().equals("Date") &&
+						!listTextBox.get("Type").getText().equals("Type")) {
+					refreshPanel();
+					articleList.add(
+							setElementList(
+									" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
+				    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
+				    				+ "INNER JOIN Product ON Product.ID = Product_x_Receipt.ID_Product "
+									+ "WHERE List_Receipt.Customer = '"
+									+ listTextBox.get("Customer").getText()
+									+ "'"
+									+ " AND List_Receipt.Date_Receipt = '"
+									+ listTextBox.get("Date").getText()
+									+ "'"
+									+ " AND List_Receipt.Type_Receipt = '"
+									+ listTextBox.get("Type").getText()
+									+ "'"
+							)
+							);
+					}else {
+						refreshPanel();
+						articleList.add(
+								setElementList(
+										" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
+					    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
+					    				+ "INNER JOIN Product ON Product.ID = Product_x_Receipt.ID_Product"
+								)
+							);
+					}
+			} 
+		});
+	}
+
 	@Override
 	protected JScrollPane setElementList(String queryExtra) {
 		String[] columnNames = {
 	            "List_Receipt.ID",
+	            "List_Receipt.Date_Receipt",
+	            "List_Receipt.Type_Receipt",
+	            "List_Receipt.Customer",
 	            "Receipt.Description_List",
 	            "Product.Name_Product",
 	            "Product.Final_Price"
@@ -95,16 +187,22 @@ public class RegisterWindow extends WindowArchetype{
 	    				columnNames[0] + ", " 
 	    				+ columnNames[1] + ", " 
 	    				+ columnNames[2] + ", " 
-	    				+ columnNames[3], 
+	    				+ columnNames[3] + ", "
+	    				+ columnNames[4] + ", " 
+	    				+ columnNames[5] + ", " 
+	    				+ columnNames[6],
 	    				"List_Receipt", 
-	    				"INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
+	    				" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
 	    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
 	    				+ "INNER JOIN Product ON Product.ID = Product_x_Receipt.ID_Product")
 	    		);
 	    
 	    String[] columnNamesToTable = {
-	            "List receipt ID",
-	            "Receipt description",
+	            "ID",
+	            "Date",
+	            "Type",
+	            "Customer",
+	            "Description",
 	            "Name product",
 	            "Final price"
 	    };

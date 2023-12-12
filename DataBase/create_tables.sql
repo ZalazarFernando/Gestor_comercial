@@ -74,6 +74,9 @@ CREATE TABLE List_Receipt(
     FOREIGN KEY (ID_Employee) REFERENCES Employee(ID)
 )
 
+ALTER TABLE List_Receipt
+ADD Customer VARCHAR(20);
+
 CREATE TABLE Receipt(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Description_List VARCHAR(100) NOT NULL,

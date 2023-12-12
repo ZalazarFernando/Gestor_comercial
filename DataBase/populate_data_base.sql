@@ -39,12 +39,22 @@ USE gestorcomercial
 -- ('Product2', 50, 40, 2),
 -- ('Product3', 200, 180, 3)
 
+-- Insertar productos
+-- INSERT INTO Product_x_Brand (ID_Brand, ID_Product)
+-- VALUES
+-- (1,2),
+-- (2,3),
+-- (3,1)
+
 -- -- Insertar listas de recibos
 -- INSERT INTO List_Receipt (Description_List, ID_Employee)
 -- VALUES
 -- ('List1', 1),
 -- ('List2', 2),
 -- ('List3', 3)
+
+UPDATE List_Receipt
+SET Customer = "CustomerTest"
 
 -- -- Insertar recibos
 -- INSERT INTO Receipt (Description_List, ID_List_Receipt)

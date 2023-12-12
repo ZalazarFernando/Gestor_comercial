@@ -27,9 +27,8 @@ public class StockWindow extends WindowArchetype{
 		setSize(700, 500);
 		setTitle("Articles");
 		setResizable(false);
-		
-		initialize();
 	}
+
 
 	@Override
 	protected void createSearchTextBox() {
@@ -64,50 +63,84 @@ public class StockWindow extends WindowArchetype{
 				articleList.revalidate();
 				articleList.repaint();
 			}
-			//Search by name and workstation
+			//Search by name and others
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!listTextBox.get("Name").getText().equals("Name") &&
-						listTextBox.get("Workstation").getText().equals("Workstation")) {
+						listTextBox.get("Brand").getText().equals("Brand") &&
+						listTextBox.get("Type").getText().equals("Type")) {
 					refreshPanel();
 					articleList.add(
 							setElementList(
-								"WHERE Name_Employee = '"
+								" INNER JOIN Product_x_Brand "
+								+ "ON Product_x_Brand.ID_Product = Product.ID "
+								+ "INNER JOIN Brand "
+								+ "ON Brand.ID = Product_x_Brand.ID_Brand "
+								+ "WHERE Product.Name_Product = '"
 								+ listTextBox.get("Name").getText()
 								+ "'"
 							)
 						);
-				} else if (!listTextBox.get("Workstation").getText().equals("Workstation") &&
-								listTextBox.get("Name").getText().equals("Name")) {
+				} else if (listTextBox.get("Name").getText().equals("Name") &&
+							!listTextBox.get("Brand").getText().equals("Brand") &&
+							listTextBox.get("Type").getText().equals("Type")) {
 					refreshPanel();
 					articleList.add(
 							setElementList(
-								"WHERE Rol = '"
-								+ listTextBox.get("Workstation").getText()
+								" INNER JOIN Product_x_Brand "
+								+ "ON Product_x_Brand.ID_Product = Product.ID "
+								+ "INNER JOIN Brand "
+								+ "ON Brand.ID = Product_x_Brand.ID_Brand "
+								+ "WHERE Brand.Name_Brand = '"
+								+ listTextBox.get("Brand").getText()
 								+ "'"
 							)
 						);
-				}
-				else if (!listTextBox.get("Workstation").getText().equals("Workstation") &&
-							!listTextBox.get("Name").getText().equals("Name")) {
+				} else if (listTextBox.get("Name").getText().equals("Name") &&
+							listTextBox.get("Brand").getText().equals("Brand") &&
+							!listTextBox.get("Type").getText().equals("Type")) {
+				refreshPanel();
+				articleList.add(
+						setElementList(
+							" INNER JOIN Product_x_Brand "
+							+ "ON Product_x_Brand.ID_Product = Product.ID "
+							+ "INNER JOIN Brand "
+							+ "ON Brand.ID = Product_x_Brand.ID_Brand "
+							+ "WHERE Brand.Type_Products = '"
+							+ listTextBox.get("Type").getText()
+							+ "'"
+						)
+					);
+			}
+				else if (!listTextBox.get("Name").getText().equals("Name") &&
+						!listTextBox.get("Brand").getText().equals("Brand") &&
+						!listTextBox.get("Type").getText().equals("Type")) {
 					refreshPanel();
 					articleList.add(
 							setElementList(
-								"WHERE "
-								+ "Name_Employee = '"
-								+ listTextBox.get("Name").getText()
-								+ "'"
-								+ " AND "
-								+ "Rol = '"
-								+ listTextBox.get("Workstation").getText()
-								+ "'"
+									" INNER JOIN Product_x_Brand "
+									+ "ON Product_x_Brand.ID_Product = Product.ID "
+									+ "INNER JOIN Brand "
+									+ "ON Brand.ID = Product_x_Brand.ID_Brand "
+									+ "WHERE Product.Name_Product = '"
+									+ listTextBox.get("Name").getText()
+									+ "'"
+									+ " AND Brand.Name_Brand = '"
+									+ listTextBox.get("Brand").getText()
+									+ "'"
+									+ " AND Brand.Type_Products = '"
+									+ listTextBox.get("Type").getText()
+									+ "'"
 							)
 							);
 					}else {
 						refreshPanel();
 						articleList.add(
 								setElementList(
-									null
+									" INNER JOIN Product_x_Brand "
+									+ "ON Product_x_Brand.ID_Product = Product.ID "
+									+ "INNER JOIN Brand "
+									+ "ON Brand.ID = Product_x_Brand.ID_Brand "
 								)
 							);
 					}
@@ -151,13 +184,23 @@ public class StockWindow extends WindowArchetype{
 
 	@Override
 	protected JScrollPane setElementList(String queryExtra) {
+		if (queryExtra == null) {
+			queryExtra = " INNER JOIN Product_x_Brand "
+							+ "ON Product_x_Brand.ID_Product = Product.ID "
+							+ "INNER JOIN Brand "
+							+ "ON Brand.ID = Product_x_Brand.ID_Brand ";
+		}
+		
 		String[] columnNames = {
-	            "ID",
-	            "Name_Product",
-	            "List_Price",
-	            "Final_Price",
-	            "ID_Supplier"
-	    };
+			    "Product.ID",
+			    "Product.Name_Product",
+			    "Product.List_Price",
+			    "Product.Final_Price",
+			    "Product.ID_Supplier",
+			    "Brand.Name_Brand",
+			    "Brand.Type_Products"
+			};
+
 
 	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(
 	    		columnNames, 
@@ -167,9 +210,11 @@ public class StockWindow extends WindowArchetype{
 	    				+ columnNames[1] + ", " 
 	    				+ columnNames[2] + ", " 
 	    				+ columnNames[3] + ", "
-	    				+ columnNames[4], 
+	    				+ columnNames[4] + ", "
+	    				+ columnNames[5] + ", "
+	    				+ columnNames[6], 
 	    				"Product", 
-	    				null)
+	    				queryExtra)
 	    		);
 	    
 	    String[] columnNamesToTable = {
@@ -177,7 +222,9 @@ public class StockWindow extends WindowArchetype{
 	            "Name",
 	            "List price",
 	            "Final price",
-	            "ID supplier"
+	            "ID supplier",
+	            "Brand",
+	            "Type"
 	    };
 	    
 	    // Crear un modelo de tabla
