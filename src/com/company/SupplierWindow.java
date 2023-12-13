@@ -75,6 +75,19 @@ public class SupplierWindow extends WindowArchetype{
 				    
 				}
 				
+				ArrayList<String> secondArrayNameColumns = databaseManager.getNameColumns("Supplier_x_Brand");
+				
+				String secondColumns = "";
+				for (int i = 0; i < secondArrayNameColumns.size(); i++) {
+				    String name = secondArrayNameColumns.get(i);
+				    secondColumns += name;
+
+				    if (i < secondArrayNameColumns.size() - 1 &&
+				        secondArrayNameColumns.get(i + 1) != null) {
+				        secondColumns += ", ";
+				    }
+				}
+				
 				String[] words = {
 						"Name",
 						"Lastname",
@@ -83,7 +96,18 @@ public class SupplierWindow extends WindowArchetype{
 						"Type"
 						};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Supplier", nameColumns);
+				String[] secondWords = {
+						"Brand"
+						};
+				
+				WindowsActionAdd waa = new WindowsActionAdd(
+						words,
+						secondWords,
+						databaseManager, 
+						"Supplier", 
+						nameColumns,
+						"Supplier_x_Brand",
+						secondColumns);
 				waa.setVisible(true);
 			}
 		});

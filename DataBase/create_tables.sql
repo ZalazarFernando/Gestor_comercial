@@ -41,9 +41,6 @@ CREATE TABLE Supplier(
     Type_Products VARCHAR(40) NOT NULL
 );
 
-SELECT *
-FROM Supplier;
-
 CREATE TABLE Brand(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Name_Brand VARCHAR(20) NOT NULL,

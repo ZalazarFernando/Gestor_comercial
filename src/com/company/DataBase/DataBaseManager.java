@@ -111,6 +111,8 @@ public class DataBaseManager {
 
             // Ejecutar la consulta
             int filasAfectadas = preparedStatement.executeUpdate();
+            
+            
         
 	    } catch (SQLException e) {
 	        e.printStackTrace();

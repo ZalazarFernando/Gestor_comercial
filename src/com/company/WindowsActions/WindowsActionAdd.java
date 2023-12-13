@@ -26,18 +26,47 @@ import com.company.DataBase.DataBaseManager;
 public class WindowsActionAdd extends WindowsActionArchetype{
 	protected List<String> wordOfAssistance = new ArrayList<String>();
 	protected String[] words;
+	protected String[] secondWords;
 	protected String nameColumns; 
+	protected String secondColumns; 
+	
+	protected String secondTable;
 	
 	
 	public WindowsActionAdd(DataBaseManager databaseManager) {
 		super(databaseManager, "");
+		
+		this.setWordOfAssistance(words);
 	}
 	
 	public WindowsActionAdd(String[] words, 
-			DataBaseManager databaseManager, String table, String nameColumns) {
+						DataBaseManager databaseManager, String table, 
+							String nameColumns) {
 		super(databaseManager, table);
 		
 		this.nameColumns = nameColumns;
+		this.words = words;
+		
+		this.setWordOfAssistance(words);
+		
+		setTitle("Add article");
+		Initialize(words);
+	}
+	
+	public WindowsActionAdd(String[] words, String[] secondWords,
+						DataBaseManager databaseManager, String table, 
+							String nameColumns,  String secondTable,
+								String secondColumn) {
+		super(databaseManager, table);
+		
+		this.nameColumns = nameColumns;
+		this.secondColumns = secondColumn;
+		this.words = words;
+		this.secondWords = secondWords;
+		this.secondTable = secondTable;
+		
+		this.setWordOfAssistance(words);
+		this.setWordOfAssistance(secondWords);
 		
 		setTitle("Add article");
 		Initialize(words);
@@ -46,9 +75,6 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 	protected void Initialize(String[] words) {
 		super.Initialize();
 		
-		this.words = words;
-		
-		this.setWordOfAssistance(words);
 		createLeftPanel();
 		createRightPanel();
 		
@@ -119,14 +145,25 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int count = 0;
+				String[] auxWords = new String[words.length + secondWords.length];
+				if (secondColumns != null) {
+					auxWords = words;
+				} else {
+					// Copia los elementos del primer arreglo
+			        System.arraycopy(words, 0, auxWords, 0, words.length);
+
+			        // Copia los elementos del segundo arreglo
+			        System.arraycopy(secondWords, 0, auxWords, words.length, secondWords.length);
+
+				}
 				
-				for (int i = 0; i < words.length; i++) {
-					if (!addTextBox.get(words[i]).getText().equals(words[i])) {
+				for (int i = 0; i < auxWords.length; i++) {
+					if (!addTextBox.get(auxWords[i]).getText().equals(words[i])) {
 						count++;
 					}
 				}
 				
-				if(count == words.length) {
+				if(count == auxWords.length) {
 					
 						ArrayList<String> auxData = new ArrayList<String>();
 						String aux = "";
@@ -147,6 +184,19 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 										aux,
 										preTable,
 										nameColumns)
+								);
+						
+						String[] dataExtra = new String[secondWords.length+1];
+						dataExtra[0] = addTextBox.get(secondWords[0]).getText();
+						dataExtra[1] = "1";
+						
+						databaseManager.setAllInfoTable(
+								dataExtra,
+								databaseManager.createQuery(
+										"INSERT INTO",
+										"?,?",
+										secondTable,
+										secondColumns)
 								);
 					}
 				
