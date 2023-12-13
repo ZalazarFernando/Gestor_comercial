@@ -13,6 +13,9 @@ CREATE TABLE Employee(
 SELECT *
 FROM Employee
 
+DELETE FROM Employee
+WHERE ID = 6
+
 ALTER TABLE Employee
 ADD CONSTRAINT fk_employee_supervised
 FOREIGN KEY (ID_Supervised) REFERENCES Employee(ID);
@@ -37,6 +40,9 @@ CREATE TABLE Supplier(
     Number_Phone VARCHAR(10) NOT NULL,
     Type_Products VARCHAR(40) NOT NULL
 );
+
+SELECT *
+FROM Supplier;
 
 CREATE TABLE Brand(
     ID INT AUTO_INCREMENT PRIMARY KEY,
