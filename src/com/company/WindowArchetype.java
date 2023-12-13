@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
@@ -41,6 +42,12 @@ public class WindowArchetype extends JFrame{
 			setResizable(false);
 			
 			initialize();
+		}
+		
+		protected void refreshPanel() {
+			this.articleList.removeAll();
+			this.articleList.revalidate();
+			this.articleList.repaint();
 		}
 		
 		protected void initialize() {

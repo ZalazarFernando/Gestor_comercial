@@ -13,8 +13,10 @@ public class WindowsActionModify extends WindowsActionAdd {
 		super.Initialize();
 	}
 
-	public WindowsActionModify(String[] words, DataBaseManager databaseManager, String table) {
-		super(words, databaseManager, table);
+	public WindowsActionModify(String[] words, 
+					DataBaseManager databaseManager, String table, 
+					String nameColumns) {
+		super(words, databaseManager, table, nameColumns);
 		setTitle("Modify article");
 		
 		super.Initialize();

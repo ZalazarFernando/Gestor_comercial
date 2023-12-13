@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class DataBaseManager {
@@ -42,6 +43,41 @@ public class DataBaseManager {
         }
     }
     
+    public ArrayList<String> getNameColumns(String nameTable) {
+    	 try {
+             // Consulta SQL para obtener todos los datos de la tabla (sin resultados)
+             String query = "SELECT * FROM " + nameTable + " WHERE 1 = 0";
+
+             // Crear una declaración
+             Statement statement = connection.createStatement();
+
+             // Ejecutar la consulta
+             ResultSet resultSet = statement.executeQuery(query);
+
+             // Obtener metadatos del resultado
+             ResultSetMetaData metaData = resultSet.getMetaData();
+
+             // Obtener el número de columnas
+             int numColumns = metaData.getColumnCount();
+             
+             ArrayList<String> namesColumns = new ArrayList<String>();
+
+             // Imprimir los nombres de las columnas
+             for (int i = 1; i <= numColumns; i++) {
+            	 namesColumns.add(metaData.getColumnName(i));
+             }
+
+             // Cerrar recursos
+             resultSet.close();
+             statement.close();
+             
+             return namesColumns;
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+		return null;
+    }
+    
     public String createQuery(String typeQuery, String data, String principalTable, String extraQuery) {
     	if(typeQuery == "SELECT") {
     		return createSelectQuery(typeQuery, data, principalTable, extraQuery);
@@ -69,22 +105,12 @@ public class DataBaseManager {
     	
     	try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             // Establecer los valores de los parámetros
-            preparedStatement.setString(1, data[0]);
-            preparedStatement.setString(2, data[1]);
-            preparedStatement.setString(3, data[2]);
-            preparedStatement.setString(4, data[3]);
-            preparedStatement.setString(5, data[4]);
-            preparedStatement.setString(6, data[5]);
+    		for (int i = 0; i < data.length; i++) {
+    			preparedStatement.setString(i+1, data[i]);
+    		}
 
             // Ejecutar la consulta
             int filasAfectadas = preparedStatement.executeUpdate();
-
-            // Verificar si se insertaron filas
-            if (filasAfectadas > 0) {
-                System.out.println("Se insertaron " + filasAfectadas + " filas correctamente.");
-            } else {
-                System.out.println("No se insertaron filas.");
-            }
         
 	    } catch (SQLException e) {
 	        e.printStackTrace();

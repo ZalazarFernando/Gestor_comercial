@@ -61,11 +61,7 @@ public class EmployeeWindow extends WindowArchetype{
 	@Override
 	protected void addActionBtn() {
 		btns.get(0).addActionListener(new ActionListener() {
-			public void refreshPanel() {
-				articleList.removeAll();
-				articleList.revalidate();
-				articleList.repaint();
-			}
+			
 			//Search by name and workstation
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -120,15 +116,34 @@ public class EmployeeWindow extends WindowArchetype{
 			//open add windows
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				ArrayList<String> arrayNameColumns = databaseManager.getNameColumns("Employee");
+				
+				String nameColumns = "";
+				for (int i = 0; i < arrayNameColumns.size(); i++) {
+				    String name = arrayNameColumns.get(i);
+
+				    if (name != null && !name.contains("ID")) {
+				        nameColumns += name;
+				        
+				        if (i < arrayNameColumns.size() - 1 && 
+				        		arrayNameColumns.get(i+1) != null) {
+				            nameColumns += ", ";
+				        }
+				    }
+				    
+				}
+				
 				String[] words = {
 						"Name",
 						"Lastname",
-						"Rol",
-						"Phone",
 						"Email",
-						"Salary"};
+						"Phone",
+						"Salary",
+						"Rol"
+						};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Employee");
+				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Employee", nameColumns);
 				waa.setVisible(true);
 			}
 		});

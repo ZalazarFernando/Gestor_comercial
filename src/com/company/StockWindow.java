@@ -160,7 +160,7 @@ public class StockWindow extends WindowArchetype{
 						"Final price",
 						"Discount"};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Product");
+				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Product", "");
 				waa.setVisible(true);
 			}
 		});

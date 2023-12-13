@@ -2,6 +2,7 @@ package com.company.WindowsActions;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,23 +16,28 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.company.DataBase.DataBaseManager;
 
 public class WindowsActionAdd extends WindowsActionArchetype{
 	protected List<String> wordOfAssistance = new ArrayList<String>();
-	
+	protected String[] words;
+	protected String nameColumns; 
 	
 	
 	public WindowsActionAdd(DataBaseManager databaseManager) {
 		super(databaseManager, "");
 	}
 	
-	public WindowsActionAdd(String[] words, DataBaseManager databaseManager, String table) {
+	public WindowsActionAdd(String[] words, 
+			DataBaseManager databaseManager, String table, String nameColumns) {
 		super(databaseManager, table);
 		
+		this.nameColumns = nameColumns;
 		
 		setTitle("Add article");
 		Initialize(words);
@@ -39,6 +45,8 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 	
 	protected void Initialize(String[] words) {
 		super.Initialize();
+		
+		this.words = words;
 		
 		this.setWordOfAssistance(words);
 		createLeftPanel();
@@ -110,32 +118,40 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 	protected void addActionDoneBtn(JButton btn) {
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!addTextBox.get("Name").getText().equals("Name") &&
-						!addTextBox.get("Lastname").getText().equals("lastname") &&
-						!addTextBox.get("Rol").getText().equals("Rol") &&
-						!addTextBox.get("Phone").getText().equals("Phone") &&
-						!addTextBox.get("Email").getText().equals("Email") &&
-						!addTextBox.get("Salary").getText().equals("Salary")) {
+				int count = 0;
+				
+				for (int i = 0; i < words.length; i++) {
+					if (!addTextBox.get(words[i]).getText().equals(words[i])) {
+						count++;
+					}
+				}
+				
+				if(count == words.length) {
 					
 						ArrayList<String> auxData = new ArrayList<String>();
+						String aux = "";
 						
-						auxData.add(addTextBox.get("Name").getText());
-						auxData.add(addTextBox.get("Lastname").getText());
-						auxData.add(addTextBox.get("Email").getText());
-						auxData.add(addTextBox.get("Phone").getText());
-						auxData.add(addTextBox.get("Salary").getText());
-						auxData.add(addTextBox.get("Rol").getText());
+						for (int i = 0; i < words.length; i++) {
+							auxData.add(addTextBox.get(words[i]).getText());
+							aux += "?";
+							if(i < words.length - 1 && 
+				        		words[i+1] != null) {
+								aux += ", ";
+							}
+						}
 						
 						databaseManager.setAllInfoTable(
 								auxData.toArray(new String[0]),
 								databaseManager.createQuery(
 										"INSERT INTO",
-										"?, ?, ?, ?, ?, ?",
+										aux,
 										preTable,
-										"Name_Employee, Lastname_Employee,"
-										+ "Email_Address, Number_Phone, Salary, Rol")
+										nameColumns)
 								);
 					}
+				
+				JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		        currentFrame.dispose();
 			}
 			
 		});
