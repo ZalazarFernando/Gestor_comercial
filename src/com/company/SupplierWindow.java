@@ -85,31 +85,6 @@ public class SupplierWindow extends WindowArchetype{
 				
 				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Supplier", nameColumns);
 				waa.setVisible(true);
-				
-				ArrayList<String> arrayNameColumnsSecond = databaseManager.getNameColumns("Supplier");
-				
-				String nameColumnsSecond = "";
-				for (int i = 0; i < arrayNameColumnsSecond.size(); i++) {
-				    String name = arrayNameColumnsSecond.get(i);
-
-				    if (name != null && !name.contains("ID")) {
-				    	nameColumnsSecond += name;
-				        
-				        if (i < arrayNameColumnsSecond.size() - 1 && 
-				        		arrayNameColumnsSecond.get(i+1) != null) {
-				        	nameColumnsSecond += ", ";
-				        }
-				    }
-				    
-				}
-				
-				String[] wordsSecond = {
-						"ID Brand"
-						};
-				
-				WindowsActionAdd waaSecond = new WindowsActionAdd(wordsSecond, 
-												databaseManager, "Supplier_x_Brand", nameColumnsSecond);
-				waaSecond.setVisible(true);
 			}
 		});
 		
