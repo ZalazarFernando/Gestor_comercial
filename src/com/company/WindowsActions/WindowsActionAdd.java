@@ -194,10 +194,16 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 								);
 						
 						if (secondColumns != null) {
+							String[] auxID = {"ID"};
+							
+							ArrayList<String> lastIDPreTable = databaseManager.getAllInfoTable(
+									auxID, 
+									"SELECT MAX("+preTable+".ID) AS ID FROM " + preTable).get(0);
+							
 							String[] dataExtra = new String[secondWords.length+1];
 							
 							dataExtra[1] = addTextBox.get(secondWords[0]).getText();
-							dataExtra[0] = "1";
+							dataExtra[0] = lastIDPreTable.toArray(new String[0])[0];
 							
 							databaseManager.setAllInfoTable(
 									dataExtra,
