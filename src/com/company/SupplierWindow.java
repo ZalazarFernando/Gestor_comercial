@@ -124,7 +124,7 @@ public class SupplierWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Supplier");
+				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Supplier", "");
 				wad.setVisible(true);
 			}
 		});

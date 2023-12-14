@@ -1,6 +1,7 @@
 package com.company;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
@@ -143,7 +145,11 @@ public class EmployeeWindow extends WindowArchetype{
 						"Rol"
 						};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Employee", nameColumns);
+				WindowsActionAdd waa = new WindowsActionAdd(
+						words, 
+						databaseManager, 
+						"Employee", 
+						nameColumns);
 				waa.setVisible(true);
 			}
 		});
@@ -160,8 +166,35 @@ public class EmployeeWindow extends WindowArchetype{
 			//open delete windows
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Employee");
-				wad.setVisible(true);
+				
+				JTable jTable = new JTable();
+				
+				Component[] components = articleList.getComponents();
+				
+				for (Component component : components) {
+				    if (component instanceof JScrollPane) {
+				        // Hemos encontrado el JScrollPane
+				        JScrollPane scrollPane = (JScrollPane) component;
+				        
+				        // Ahora, obten la JViewport dentro del JScrollPane
+				        JViewport viewport = scrollPane.getViewport();
+				        
+				        // Finalmente, obtén la JTable desde la JViewport
+				        jTable = (JTable) viewport.getView();
+				    }
+				}
+				
+				int selectedRow = jTable.getSelectedRow();
+				
+				if (selectedRow != -1) {
+					Object value = jTable.getValueAt(selectedRow, 0);
+					
+					WindowsActionDelete wad = new WindowsActionDelete(
+							databaseManager, 
+							"Employee",
+							(String) value);
+					wad.setVisible(true);
+				}
 			}
 		});
 	}
@@ -188,7 +221,7 @@ public class EmployeeWindow extends WindowArchetype{
 	    				+ columnNames[3] + ", "
 	    				+ columnNames[4] + ", "
 	    				+ columnNames[5] + ", "
-	    				+ columnNames[6], 
+	    				+ columnNames[6] + ", Deleted_At", 
 	    				"Employee", 
 	    				queryExtra)
 	    		);

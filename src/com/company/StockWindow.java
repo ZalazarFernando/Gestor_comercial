@@ -215,7 +215,7 @@ public class StockWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Product");
+				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Product", "");
 				wad.setVisible(true);
 			}
 		});

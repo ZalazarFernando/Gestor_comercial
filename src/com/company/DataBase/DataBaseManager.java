@@ -1,8 +1,14 @@
 package com.company.DataBase;
 
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JList;
 
@@ -83,6 +89,8 @@ public class DataBaseManager {
     		return createSelectQuery(typeQuery, data, principalTable, extraQuery);
     	} else if (typeQuery == "INSERT INTO") {
     		return createInsertQuery(typeQuery, data, principalTable, extraQuery);
+    	} else if (typeQuery == "DELETE") {
+    		return createSoftDeleteQuery("UPDATE", data, principalTable, extraQuery);
     	} else {
     		return "";
     	}
@@ -98,6 +106,16 @@ public class DataBaseManager {
     	} else {
     		return typeQuery + " " + data + " FROM " + principalTable + " " + extraQuery;
     	}
+    }
+    
+    private String createSoftDeleteQuery(String typeQuery, 
+    									String data, String principalTable,
+    									String extraQuery) {
+    	
+    	//update tabla set nombreColumna = valor WHERE ID
+    	return typeQuery + " " + principalTable + " SET" 
+    			+ " Deleted_At = " + data + " WHERE ID = " 
+    			+ extraQuery;
     }
     
     public void setAllInfoTable(String[] data, String createdQuery) {
@@ -117,6 +135,51 @@ public class DataBaseManager {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
+    }
+    
+    public void deleteIndex(String createdQuery,int index) {
+    	String query = createdQuery;
+    	
+    	PreparedStatement preparedStatement;
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			
+			if (connection != null) {
+	            try {
+	            	Date currentDate = new Date();
+	            	Timestamp timestamp = new Timestamp(currentDate.getTime());
+
+	            	// Formatear la fecha y hora según tus necesidades
+	            	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	            	String formattedDateTime = dateFormat.format(currentDate);
+	            	
+			        // Establecer los valores de los parámetros
+			        preparedStatement.setString(1, formattedDateTime); // Nuevo horario
+			        preparedStatement.setInt(2, index); // ID del empleado que deseas actualizar
+			
+			        // Ejecutar la consulta
+			        int filasAfectadas = preparedStatement.executeUpdate();
+			
+			        // Verificar si la actualización fue exitosa
+			        if (filasAfectadas > 0) {
+			            System.out.println("Actualización exitosa.");
+			        } else {
+			            System.out.println("No se encontró el empleado con el ID especificado.");
+			        }
+			
+			        // Cerrar la conexión y otros recursos
+			        preparedStatement.close();
+		        
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+	    	}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
     }
     
     public ArrayList<ArrayList> getAllInfoTable(String[] data, String createdQuery) {
@@ -144,7 +207,9 @@ public class DataBaseManager {
             	
             	ArrayList<String> info = new ArrayList<String>();
             	for (int i = 0; i < getInfo.length; i++) {
-            		info.add(getInfo[i]);
+            		if (resultSet.getObject("Deleted_At") == null) {
+            			info.add(getInfo[i]);
+            		}
             	}
             	
                 /*ArrayList<String> infoEmployee = new ArrayList<String>();

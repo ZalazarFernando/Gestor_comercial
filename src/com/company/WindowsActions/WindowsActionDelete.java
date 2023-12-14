@@ -2,13 +2,19 @@ package com.company.WindowsActions;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import com.company.DataBase.DataBaseManager;
 
 public class WindowsActionDelete extends WindowsActionArchetype {
-	public WindowsActionDelete(DataBaseManager databaseManager, String table) {
+	private String index;
+	
+	public WindowsActionDelete(DataBaseManager databaseManager, 
+			String table, String index) {
 		super(databaseManager, table);
+		
+		this.index = index;
 		
 		setTitle("Delete article");
 		
@@ -25,5 +31,18 @@ public class WindowsActionDelete extends WindowsActionArchetype {
 		JLabel ask = new JLabel("You are sure delete this element?");
 		
 		upPanel.add(ask);
+	}
+
+	@Override
+	protected void addActionDoneBtn(JButton btn) {
+		databaseManager.deleteIndex(
+				databaseManager.createQuery(
+						"DELETE", 
+						"?", 
+						preTable,
+						"?"
+						),
+				Integer.valueOf(this.index)
+				);
 	}
 }

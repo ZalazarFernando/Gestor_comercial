@@ -7,21 +7,17 @@ CREATE TABLE Employee(
     Email_Address VARCHAR(50) NOT NULL,
     Number_Phone VARCHAR(10) NOT NULL,
     Salary INT NOT NULL,
-    ID_Supervised INT
+    ID_Supervised INT,
+    Rol VARCHAR(50),
+    Deleted_At DATETIME
 );
-
-SELECT *
-FROM Employee
-
-DELETE FROM Employee
-WHERE ID = 6
 
 ALTER TABLE Employee
 ADD CONSTRAINT fk_employee_supervised
 FOREIGN KEY (ID_Supervised) REFERENCES Employee(ID);
 
-ALTER TABLE Employee
-ADD Rol VARCHAR(50);
+SELECT *
+FROM Employee;
 
 CREATE TABLE Working_hours(
     ID INT AUTO_INCREMENT ,
