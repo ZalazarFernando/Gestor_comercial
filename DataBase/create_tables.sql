@@ -65,6 +65,11 @@ CREATE TABLE Product(
     FOREIGN KEY (ID_Supplier) REFERENCES Supplier(ID)
 )
 
+SELECT *
+FROM Product_x_Brand;
+
+DELETE FROM Supplier_x_Brand;
+
 CREATE TABLE Product_x_Brand(
     ID_Product INT NOT NULL,
     ID_Brand INT NOT NULL,

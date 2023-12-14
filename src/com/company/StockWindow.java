@@ -150,17 +150,56 @@ public class StockWindow extends WindowArchetype{
 		btns.get(1).addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> arrayNameColumns = databaseManager.getNameColumns("Product");
+				
+				String nameColumns = "";
+				for (int i = 0; i < arrayNameColumns.size(); i++) {
+				    String name = arrayNameColumns.get(i);
+
+				    if (name != null && !name.equals("ID")) {
+				        nameColumns += name;
+				        
+				        if (i < arrayNameColumns.size() - 1 && 
+				        		arrayNameColumns.get(i+1) != null) {
+				            nameColumns += ", ";
+				        }
+				    }
+				    
+				}
+				
+				ArrayList<String> secondArrayNameColumns = databaseManager.getNameColumns("Product_x_Brand");
+				
+				String secondColumns = "";
+				for (int i = 0; i < secondArrayNameColumns.size(); i++) {
+				    String name = secondArrayNameColumns.get(i);
+				    secondColumns += name;
+
+				    if (i < secondArrayNameColumns.size() - 1 &&
+				        secondArrayNameColumns.get(i + 1) != null) {
+				        secondColumns += ", ";
+				    }
+				}
+				
 				String[] words = {
 						"Name",
-						"Brand",
-						"Supplier",
-						"Type",
-						"Code",
-						"Purchase price",
+						"List price",
 						"Final price",
-						"Discount"};
+						"Supplier"
+						};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(words, databaseManager, "Product", "");
+				String[] secondWords = {
+						"Brand"
+						};
+				
+				WindowsActionAdd waa = new WindowsActionAdd(
+						words,
+						secondWords,
+						databaseManager, 
+						"Product", 
+						nameColumns,
+						"Product_x_Brand",
+						secondColumns);
+				
 				waa.setVisible(true);
 			}
 		});

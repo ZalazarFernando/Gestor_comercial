@@ -145,8 +145,16 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int count = 0;
-				String[] auxWords = new String[words.length + secondWords.length];
-				if (secondColumns != null) {
+				
+				String[] auxWords;
+			
+				if (secondWords != null) {
+					auxWords = new String[words.length + secondWords.length];
+				} else {
+					auxWords = new String[words.length];
+				}
+				
+				if (secondColumns == null) {
 					auxWords = words;
 				} else {
 					// Copia los elementos del primer arreglo
@@ -154,11 +162,10 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 
 			        // Copia los elementos del segundo arreglo
 			        System.arraycopy(secondWords, 0, auxWords, words.length, secondWords.length);
-
 				}
 				
 				for (int i = 0; i < auxWords.length; i++) {
-					if (!addTextBox.get(auxWords[i]).getText().equals(words[i])) {
+					if (!addTextBox.get(auxWords[i]).getText().equals(auxWords[i])) {
 						count++;
 					}
 				}
@@ -186,18 +193,21 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 										nameColumns)
 								);
 						
-						String[] dataExtra = new String[secondWords.length+1];
-						dataExtra[0] = addTextBox.get(secondWords[0]).getText();
-						dataExtra[1] = "1";
-						
-						databaseManager.setAllInfoTable(
-								dataExtra,
-								databaseManager.createQuery(
-										"INSERT INTO",
-										"?,?",
-										secondTable,
-										secondColumns)
-								);
+						if (secondColumns != null) {
+							String[] dataExtra = new String[secondWords.length+1];
+							
+							dataExtra[1] = addTextBox.get(secondWords[0]).getText();
+							dataExtra[0] = "1";
+							
+							databaseManager.setAllInfoTable(
+									dataExtra,
+									databaseManager.createQuery(
+											"INSERT INTO",
+											"?,?",
+											secondTable,
+											secondColumns)
+									);
+						}
 					}
 				
 				JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
