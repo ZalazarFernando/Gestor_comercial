@@ -1,3 +1,4 @@
+-- Active: 1702062893216@@127.0.0.1@3306@gestorcomercial
 USE gestorcomercial;
 
 CREATE TABLE Employee(
@@ -16,9 +17,6 @@ ALTER TABLE Employee
 ADD CONSTRAINT fk_employee_supervised
 FOREIGN KEY (ID_Supervised) REFERENCES Employee(ID);
 
-SELECT *
-FROM Employee;
-
 CREATE TABLE Working_hours(
     ID INT AUTO_INCREMENT ,
     ID_Employee INT,
@@ -34,8 +32,12 @@ CREATE TABLE Supplier(
     Lastname_Supplier VARCHAR(20) NOT NULL,
     Email_Address VARCHAR(50) NOT NULL,
     Number_Phone VARCHAR(10) NOT NULL,
-    Type_Products VARCHAR(40) NOT NULL
+    Type_Products VARCHAR(40) NOT NULL,
+    Deleted_At DATETIME
 );
+
+ALTER TABLE Supplier
+ADD Deleted_At DATETIME;
 
 CREATE TABLE Brand(
     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,6 +60,7 @@ CREATE TABLE Product(
     List_Price INT NOT NULL,
     Final_Price INT NOT NULL,
     ID_Supplier INT NOT NULL,
+    Deleted_At DATETIME,
     FOREIGN KEY (ID_Supplier) REFERENCES Supplier(ID)
 )
 
@@ -73,11 +76,10 @@ CREATE TABLE List_Receipt(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Description_List VARCHAR(100) NOT NULL,
     ID_Employee INT NOT NULL,
+    Customer VARCHAR(20),
+    Deleted_At DATETIME,
     FOREIGN KEY (ID_Employee) REFERENCES Employee(ID)
 )
-
-ALTER TABLE List_Receipt
-ADD Customer VARCHAR(20);
 
 CREATE TABLE Receipt(
     ID INT AUTO_INCREMENT PRIMARY KEY,

@@ -53,6 +53,20 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 		Initialize(words);
 	}
 	
+	public WindowsActionAdd(String[] words, 
+			DataBaseManager databaseManager, String table, 
+				String nameColumns, String index) {
+		super(databaseManager, table);
+		
+		this.nameColumns = nameColumns;
+		this.words = words;
+		
+		this.setWordOfAssistance(words);
+		
+		setTitle("Add article");
+		Initialize(words, index);
+	}
+	
 	public WindowsActionAdd(String[] words, String[] secondWords,
 						DataBaseManager databaseManager, String table, 
 							String nameColumns,  String secondTable,
@@ -73,6 +87,16 @@ public class WindowsActionAdd extends WindowsActionArchetype{
 	}
 	
 	protected void Initialize(String[] words) {
+		super.Initialize();
+		
+		createLeftPanel();
+		createRightPanel();
+		
+		createLeftTextBox();
+		createRightTextBox();
+	}
+	
+	protected void Initialize(String[] words, String index) {
 		super.Initialize();
 		
 		createLeftPanel();

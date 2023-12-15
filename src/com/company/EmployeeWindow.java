@@ -158,8 +158,64 @@ public class EmployeeWindow extends WindowArchetype{
 			//open modify window
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionModify wam = new WindowsActionModify(databaseManager);
-				wam.setVisible(true);
+				ArrayList<String> arrayNameColumns = databaseManager.getNameColumns("Employee");
+				
+				String nameColumns = "";
+				for (int i = 0; i < arrayNameColumns.size(); i++) {
+				    String name = arrayNameColumns.get(i);
+
+				    if (name != null && !name.contains("ID")) {
+				        nameColumns += name;
+				        
+				        if (i < arrayNameColumns.size() - 1 && 
+				        		arrayNameColumns.get(i+1) != null) {
+				            nameColumns += ", ";
+				        }
+				    }
+				    
+				}
+				
+				String[] words = {
+						"Name",
+						"Lastname",
+						"Email",
+						"Phone",
+						"Salary",
+						"Rol"
+						};
+				
+				JTable jTable = new JTable();
+				
+				Component[] components = articleList.getComponents();
+				
+				for (Component component : components) {
+				    if (component instanceof JScrollPane) {
+				        // Hemos encontrado el JScrollPane
+				        JScrollPane scrollPane = (JScrollPane) component;
+				        
+				        // Ahora, obten la JViewport dentro del JScrollPane
+				        JViewport viewport = scrollPane.getViewport();
+				        
+				        // Finalmente, obtén la JTable desde la JViewport
+				        jTable = (JTable) viewport.getView();
+				    }
+				}
+				
+				int selectedRow = jTable.getSelectedRow();
+				
+				if (selectedRow != -1) {
+					Object value = jTable.getValueAt(selectedRow, 0);
+					
+					System.out.println("EmployeeWindow: " + value.toString());
+				
+					WindowsActionModify wam = new WindowsActionModify(
+							words,
+							databaseManager,
+							"Employee",
+							nameColumns,
+							value.toString());
+					wam.setVisible(true);
+				}
 			}
 		});
 		btns.get(3).addActionListener(new ActionListener() {

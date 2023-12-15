@@ -151,7 +151,7 @@ public class SupplierWindow extends WindowArchetype{
 	    	    		+ columnNames[2] + ", " 
 	    	    		+ columnNames[3] + ", "
 	    	    		+ columnNames[4] + ", "
-	    	    		+ columnNames[5], 
+	    	    		+ columnNames[5] + ", Deleted_At", 
 	    				"Supplier", 
 	    				null)
 	    		);

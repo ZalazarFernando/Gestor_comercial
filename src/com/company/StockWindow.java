@@ -251,7 +251,7 @@ public class StockWindow extends WindowArchetype{
 	    				+ columnNames[3] + ", "
 	    				+ columnNames[4] + ", "
 	    				+ columnNames[5] + ", "
-	    				+ columnNames[6], 
+	    				+ columnNames[6] + ", Deleted_At", 
 	    				"Product", 
 	    				queryExtra)
 	    		);

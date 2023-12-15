@@ -193,7 +193,7 @@ public class RegisterWindow extends WindowArchetype{
 	    				+ columnNames[3] + ", "
 	    				+ columnNames[4] + ", " 
 	    				+ columnNames[5] + ", " 
-	    				+ columnNames[6],
+	    				+ columnNames[6] + ", Deleted_At",
 	    				"List_Receipt", 
 	    				" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
 	    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
