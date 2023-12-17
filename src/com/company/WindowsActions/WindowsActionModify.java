@@ -1,13 +1,20 @@
 package com.company.WindowsActions;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.company.DataBase.DataBaseManager;
 
@@ -59,15 +66,6 @@ public class WindowsActionModify extends WindowsActionAdd {
 			auxColumns[i] = auxC;
 		}
 		
-		System.out.println(databaseManager.getAllInfoTable(
-				auxColumns, 
-				databaseManager.createQuery(
-						"SELECT", 
-						nameColumns, 
-						preTable, 
-						"WHERE ID = " + index)
-			));
-		
 		ArrayList<String> auxNames = databaseManager.getAllInfoTable(
 				auxColumns, 
 				databaseManager.createQuery(
@@ -76,8 +74,6 @@ public class WindowsActionModify extends WindowsActionAdd {
 						preTable, 
 						"WHERE ID = " + index)
 			).get(0);
-		
-		System.out.println(auxNames);
 		
 		for ( int i = 0; i < auxNames.size(); i++ ) {
 		    if (auxNames.get(i) == null) {
@@ -88,46 +84,46 @@ public class WindowsActionModify extends WindowsActionAdd {
 		this.namesForTextBox = auxNames.toArray(new String[0]);
 	}
 
-	
-
 	@Override
 	protected void createRightTextBox() {
 		if(wordOfAssistance.size()>0) {
-			String[] words = new String[wordOfAssistance.size()];
+			String[] aux = new String[wordOfAssistance.size()];
 			
-			for(int i=0; i<words.length; i++) {
-				words[i] = wordOfAssistance.get(i);
+			for(int i=0; i<aux.length; i++) {
+				aux[i] = wordOfAssistance.get(i);
 			}
 			
-			for(int i=0; i<words.length; i++) {
-				wordOfAssistance.remove(words[i]);
+			for(int i=0; i<aux.length; i++) {
+				wordOfAssistance.remove(aux[i]);
 			}
 			
-			for(int i=0; i<words.length ; i++) {
-				rightPanel.add(createAutoTextBox(namesForTextBox[i]));
+			for(int i=0; i<aux.length ; i++) {
+				rightPanel.add(createAutoTextBox(namesForTextBox[i+4]));
+				words[i+4] = namesForTextBox[i+4];
 			}
 		}
 	}
 
 	@Override
 	protected void createLeftTextBox() {
-		String[] words;
+		String[] aux;
 		if(wordOfAssistance.size()>=4) {
-			words = new String[4];
+			aux = new String[4];
 		}else {
-			words = new String[wordOfAssistance.size()];
+			aux = new String[wordOfAssistance.size()];
 		}
 		
-		for(int i=0; i<words.length; i++) {
-			words[i] = wordOfAssistance.get(i);
+		for(int i=0; i<aux.length; i++) {
+			aux[i] = wordOfAssistance.get(i);
 		}
 		
-		for(int i=0; i<words.length; i++) {
-			wordOfAssistance.remove(words[i]);
+		for(int i=0; i<aux.length; i++) {
+			wordOfAssistance.remove(aux[i]);
 		}
 		
-		for(int i=0; i<words.length ; i++) {
+		for(int i=0; i<aux.length ; i++) {
 			leftPanel.add(createAutoTextBox(namesForTextBox[i]));
+			words[i] = namesForTextBox[i];
 		}
 	}
 
@@ -135,11 +131,61 @@ public class WindowsActionModify extends WindowsActionAdd {
 	protected JTextField createAutoTextBox(String name) {
 		JTextField textBox = new JTextField(name);
 		textBox.setPreferredSize(new Dimension(150, 25));
-		textBox.setForeground(Color.GRAY);
+		textBox.setForeground(Color.BLACK);
 		
 		addTextBox.put(name, textBox);
 		
 		return(textBox);
+	}
+
+	@Override
+	protected void addActionDoneBtn(JButton btn) {
+		btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				ArrayList<String> auxData = new ArrayList<String>();
+				
+				for (int i = 0; i < words.length; i++) {
+					auxData.add(addTextBox.get(words[i]).getText());
+				}
+				
+				String[] aux = nameColumns.split(",");
+				
+				for (int i = 0; i < aux.length; i++) {
+					if (!aux[i].equals(" Deleted_At")) {
+						aux[i] += " = ?";
+					}
+				}
+				for (int i = 0; i < aux.length; i++) {
+					if (aux[i+1].contains("= ?")) {
+						aux[i] += ",";
+					} else {
+						break;
+					}
+				}
+				nameColumns = "";
+				for (int i = 0; i < aux.length; i++) {
+					if (!aux[i].equals(" Deleted_At")) {
+						nameColumns += aux[i];
+					}
+				}
+				
+				databaseManager.updateAllInfoTable(
+						auxData.toArray(new String[0]),
+						databaseManager.createQuery(
+								"UPDATE",
+								nameColumns,
+								preTable,
+								index)
+						);
+				
+				JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		        currentFrame.dispose();
+			}
+			
+		});
 	}
 	
 	

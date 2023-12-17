@@ -13,6 +13,9 @@ CREATE TABLE Employee(
     Deleted_At DATETIME
 );
 
+SELECT *
+FROM employee
+
 ALTER TABLE Employee
 ADD CONSTRAINT fk_employee_supervised
 FOREIGN KEY (ID_Supervised) REFERENCES Employee(ID);

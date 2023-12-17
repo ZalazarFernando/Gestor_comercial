@@ -172,7 +172,6 @@ public class EmployeeWindow extends WindowArchetype{
 				            nameColumns += ", ";
 				        }
 				    }
-				    
 				}
 				
 				String[] words = {
@@ -205,8 +204,6 @@ public class EmployeeWindow extends WindowArchetype{
 				
 				if (selectedRow != -1) {
 					Object value = jTable.getValueAt(selectedRow, 0);
-					
-					System.out.println("EmployeeWindow: " + value.toString());
 				
 					WindowsActionModify wam = new WindowsActionModify(
 							words,

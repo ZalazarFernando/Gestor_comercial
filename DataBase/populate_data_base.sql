@@ -53,9 +53,6 @@ USE gestorcomercial
 -- ('List2', 2),
 -- ('List3', 3)
 
-UPDATE List_Receipt
-SET Customer = "CustomerTest"
-
 -- -- Insertar recibos
 -- INSERT INTO Receipt (Description_List, ID_List_Receipt)
 -- VALUES

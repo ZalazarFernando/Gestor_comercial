@@ -91,6 +91,8 @@ public class DataBaseManager {
     		return createInsertQuery(typeQuery, data, principalTable, extraQuery);
     	} else if (typeQuery == "DELETE") {
     		return createSoftDeleteQuery("UPDATE", data, principalTable, extraQuery);
+    	} else if (typeQuery == "UPDATE") {
+    		return createUpdateQuery("UPDATE", data, principalTable, extraQuery);
     	} else {
     		return "";
     	}
@@ -116,6 +118,34 @@ public class DataBaseManager {
     	return typeQuery + " " + principalTable + " SET" 
     			+ " Deleted_At = " + data + " WHERE ID = " 
     			+ extraQuery;
+    }
+    
+    private String createUpdateQuery(String typeQuery, String columns,
+    		String principalTable, String extraQuery) {
+		//update tabla set nombreColumna = valor WHERE ID
+		return typeQuery + " " + principalTable + " SET" 
+		+ " " + columns + " WHERE ID = " 
+		+ extraQuery;
+    }
+    
+    public void updateAllInfoTable(String[] values, String createdQuery) {
+        String query = createdQuery;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            for (int i = 0; i < values.length; i++) {
+                preparedStatement.setString(i + 1, values[i]);
+            }
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Actualización exitosa.");
+            } else {
+                System.out.println("No se encontraron filas para actualizar.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     public void setAllInfoTable(String[] data, String createdQuery) {
