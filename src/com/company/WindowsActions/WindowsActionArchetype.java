@@ -29,7 +29,7 @@ public class WindowsActionArchetype extends JFrame{
 		this.databaseManager = databaseManager;
 		
 		preTable = table;
-		//setResizable(false);
+		setResizable(false);
 		Initialize();
 	}
 

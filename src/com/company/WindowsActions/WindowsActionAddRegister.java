@@ -1,10 +1,16 @@
 package com.company.WindowsActions;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
@@ -82,15 +89,95 @@ public class WindowsActionAddRegister extends WindowsActionArchetype{
 	
 	private void createSaveBtn() {
 		saveBtn = new JButton("Save");
+		
+		saveBtn.addActionListener( new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> fieldValues = new ArrayList<>();
+				 
+				for ( Entry<String, JTextField> entry : addTextBox.entrySet() ) {
+					if ( !entry.getKey().equals("Date") &&
+							!entry.getValue().getText().equals(entry.getKey())) {
+						
+						if (entry.getKey() == "Final price") {
+							System.out.println(entry.getValue().getText());
+						}
+						fieldValues.add(entry.getValue().getText());
+						System.out.println("hola");
+					} else {
+						LocalDateTime currentDateTime = LocalDateTime.now();
+
+				        // Formatear la fecha y hora como una cadena
+				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				        String formattedDateTime = currentDateTime.format(formatter);
+				        
+						fieldValues.add(formattedDateTime);
+					}
+				}
+
+			    // Obtener el modelo de la JTable
+			    JScrollPane scrollPane = getScrollPane();
+			    JTable jTable = getJTable(scrollPane);
+			    DefaultTableModel tableModel = (DefaultTableModel) jTable.getModel();
+
+			    // Añadir una nueva fila al modelo con la información recopilada
+			    tableModel.addRow(fieldValues.toArray());
+
+			    // Limpiar los JTextFields después de guardar la información
+			    clearTextFields();
+
+			    // Actualizar la JTable
+			    tableModel.fireTableDataChanged();
+			}
+			
+		});
+		
 		btnDownPanel.add(saveBtn);
 	}
-	
+
 	private void createDeleteBtn() {
 		deleteBtn = new JButton("Delete");
+		
+		deleteBtn.addActionListener( new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
+		
 		btnDownPanel.add(deleteBtn);
 	}
-	
+
 	//method extra
+	// Método para obtener el JScrollPane desde el upPanel
+	private JScrollPane getScrollPane() {
+	    Component[] components = upPanel.getComponents();
+	    for (Component component : components) {
+	        if (component instanceof JScrollPane) {
+	            return (JScrollPane) component;
+	        }
+	    }
+	    return null;
+	}
+
+	// Método para obtener la JTable desde el JScrollPane
+	private JTable getJTable(JScrollPane scrollPane) {
+	    if (scrollPane != null) {
+	        return (JTable) scrollPane.getViewport().getView();
+	    }
+	    return null;
+	}
+
+	// Método para limpiar los JTextFields después de guardar la información
+	private void clearTextFields() {
+		for ( Entry<String, JTextField> entry : addTextBox.entrySet() ) {
+			entry.getValue().setText(entry.getKey());
+		}
+	}
+	
 	protected JScrollPane setElementList() {
 			String[] columnNamesToTable = {
 		            "Date",
