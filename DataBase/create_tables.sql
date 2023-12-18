@@ -39,9 +39,6 @@ CREATE TABLE Supplier(
     Deleted_At DATETIME
 );
 
-ALTER TABLE Supplier
-ADD Deleted_At DATETIME;
-
 CREATE TABLE Brand(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Name_Brand VARCHAR(20) NOT NULL,
@@ -84,10 +81,14 @@ CREATE TABLE List_Receipt(
     FOREIGN KEY (ID_Employee) REFERENCES Employee(ID)
 )
 
+SELECT *
+FROM List_Receipt
+
 CREATE TABLE Receipt(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Description_List VARCHAR(100) NOT NULL,
     ID_List_Receipt INT NOT NULL,
+    Deleted_At DATETIME,
     FOREIGN KEY (ID_List_Receipt) REFERENCES List_Receipt(ID)
 )
 

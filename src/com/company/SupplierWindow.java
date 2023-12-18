@@ -1,5 +1,6 @@
 	package com.company;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
@@ -116,16 +118,95 @@ public class SupplierWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionModify wam = new WindowsActionModify(databaseManager);
-				wam.setVisible(true);
+				ArrayList<String> arrayNameColumns = 
+							databaseManager.getNameColumns("Supplier");
+				
+				String nameColumns = "";
+				for (int i = 0; i < arrayNameColumns.size(); i++) {
+				    String name = arrayNameColumns.get(i);
+
+				    if (name != null && !name.contains("ID")) {
+				        nameColumns += name;
+				        
+				        if (i < arrayNameColumns.size() - 1 && 
+				        		arrayNameColumns.get(i+1) != null) {
+				            nameColumns += ", ";
+				        }
+				    }
+				}
+				
+				String[] words = {
+						"Name",
+						"Lastname",
+						"Email",
+						"Phone",
+						"Type"
+						};
+				
+				JTable jTable = new JTable();
+				
+				Component[] components = articleList.getComponents();
+				
+				for (Component component : components) {
+				    if (component instanceof JScrollPane) {
+				        // Hemos encontrado el JScrollPane
+				        JScrollPane scrollPane = (JScrollPane) component;
+				        
+				        // Ahora, obten la JViewport dentro del JScrollPane
+				        JViewport viewport = scrollPane.getViewport();
+				        
+				        // Finalmente, obtén la JTable desde la JViewport
+				        jTable = (JTable) viewport.getView();
+				    }
+				}
+				
+				int selectedRow = jTable.getSelectedRow();
+				
+				if (selectedRow != -1) {
+					Object value = jTable.getValueAt(selectedRow, 0);
+				
+					WindowsActionModify wam = new WindowsActionModify(
+							words,
+							databaseManager,
+							"Supplier",
+							nameColumns,
+							value.toString());
+					wam.setVisible(true);
+				}
 			}
 		});
 		btns.get(3).addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowsActionDelete wad = new WindowsActionDelete(databaseManager, "Supplier", "");
-				wad.setVisible(true);
+JTable jTable = new JTable();
+				
+				Component[] components = articleList.getComponents();
+				
+				for (Component component : components) {
+				    if (component instanceof JScrollPane) {
+				        // Hemos encontrado el JScrollPane
+				        JScrollPane scrollPane = (JScrollPane) component;
+				        
+				        // Ahora, obten la JViewport dentro del JScrollPane
+				        JViewport viewport = scrollPane.getViewport();
+				        
+				        // Finalmente, obtén la JTable desde la JViewport
+				        jTable = (JTable) viewport.getView();
+				    }
+				}
+				
+				int selectedRow = jTable.getSelectedRow();
+				
+				if (selectedRow != -1) {
+					Object value = jTable.getValueAt(selectedRow, 0);
+					
+					WindowsActionDelete wad = new WindowsActionDelete(
+							databaseManager, 
+							"Supplier",
+							(String) value);
+					wad.setVisible(true);
+				}
 			}
 		});
 	}

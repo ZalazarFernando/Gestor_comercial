@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
@@ -53,31 +54,6 @@ public class RegisterWindow extends WindowArchetype{
 		}
 		
 		rightPanel.add(panelTextBox);
-	}
-
-	@Override
-	protected void createListBtn() {
-		JPanel btnPanel = new JPanel();
-		btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
-		
-		btns = new ArrayList<JButton>();
-		
-		btns.add(new JButton("Search"));
-		btns.add(new JButton("Invoice"));//factura
-		btns.add(new JButton("Delivery note"));//Remito
-		btns.add(new JButton("Receipt"));//Recibo
-		
-		for(int i=0; i<btns.size(); i++) {
-			addPreferencesBtn(btns.get(i));
-		}
-		
-		for(int i=0; i<btns.size(); i++) {
-			btnPanel.add(btns.get(i));
-		}
-		
-		leftPanel.add(btnPanel);
-		
-		addActionBtn();
 	}
 	
 	@Override
@@ -169,6 +145,156 @@ public class RegisterWindow extends WindowArchetype{
 					}
 			} 
 		});
+		btns.get(1).addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> arrayNameColumns = databaseManager.getNameColumns("List_Receipt");
+				
+				String nameColumns = "";
+				for (int i = 0; i < arrayNameColumns.size(); i++) {
+				    String name = arrayNameColumns.get(i);
+
+				    if (name != null && !name.contains("ID")) {
+				        nameColumns += name;
+				        
+				        if (i < arrayNameColumns.size() - 1 && 
+				        		arrayNameColumns.get(i+1) != null) {
+				            nameColumns += ", ";
+				        }
+				    }
+				    
+				}
+				
+				ArrayList<String> secondArrayNameColumns = databaseManager.getNameColumns("Receipt");
+				
+				String secondColumns = "";
+				for (int i = 0; i < secondArrayNameColumns.size(); i++) {
+				    String name = secondArrayNameColumns.get(i);
+				    secondColumns += name;
+
+				    if (i < secondArrayNameColumns.size() - 1 &&
+				        secondArrayNameColumns.get(i + 1) != null) {
+				        secondColumns += ", ";
+				    }
+				}
+				
+				String[] words = {
+						"Description_List",
+						"ID_Employee",
+						"Customer"
+						};
+				
+				String[] secondWords = {
+						"Description_List",
+						"ID_List_Receipt"
+						};
+				
+				WindowsActionAdd waa = new WindowsActionAdd(
+						words,
+						secondWords,
+						databaseManager, 
+						"List_Receipt", 
+						nameColumns,
+						"Receipt",
+						secondColumns);
+				waa.setVisible(true);
+			}
+		});
+		
+		btns.get(2).addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> arrayNameColumns = 
+							databaseManager.getNameColumns("List_Receipt");
+				
+				String nameColumns = "";
+				for (int i = 0; i < arrayNameColumns.size(); i++) {
+				    String name = arrayNameColumns.get(i);
+
+				    if (name != null && !name.contains("ID")) {
+				        nameColumns += name;
+				        
+				        if (i < arrayNameColumns.size() - 1 && 
+				        		arrayNameColumns.get(i+1) != null) {
+				            nameColumns += ", ";
+				        }
+				    }
+				}
+				
+				String[] words = {
+						"Description_List",
+						"ID_Employee",
+						"Customer"
+						};
+				
+				JTable jTable = new JTable();
+				
+				Component[] components = articleList.getComponents();
+				
+				for (Component component : components) {
+				    if (component instanceof JScrollPane) {
+				        // Hemos encontrado el JScrollPane
+				        JScrollPane scrollPane = (JScrollPane) component;
+				        
+				        // Ahora, obten la JViewport dentro del JScrollPane
+				        JViewport viewport = scrollPane.getViewport();
+				        
+				        // Finalmente, obtén la JTable desde la JViewport
+				        jTable = (JTable) viewport.getView();
+				    }
+				}
+				
+				int selectedRow = jTable.getSelectedRow();
+				
+				if (selectedRow != -1) {
+					Object value = jTable.getValueAt(selectedRow, 0);
+				
+					WindowsActionModify wam = new WindowsActionModify(
+							words,
+							databaseManager,
+							"List_Receipt",
+							nameColumns,
+							value.toString());
+					wam.setVisible(true);
+				}
+			}
+		});
+		btns.get(3).addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JTable jTable = new JTable();
+				
+				Component[] components = articleList.getComponents();
+				
+				for (Component component : components) {
+				    if (component instanceof JScrollPane) {
+				        // Hemos encontrado el JScrollPane
+				        JScrollPane scrollPane = (JScrollPane) component;
+				        
+				        // Ahora, obten la JViewport dentro del JScrollPane
+				        JViewport viewport = scrollPane.getViewport();
+				        
+				        // Finalmente, obtén la JTable desde la JViewport
+				        jTable = (JTable) viewport.getView();
+				    }
+				}
+				
+				int selectedRow = jTable.getSelectedRow();
+				
+				if (selectedRow != -1) {
+					Object value = jTable.getValueAt(selectedRow, 0);
+					
+					WindowsActionDelete wad = new WindowsActionDelete(
+							databaseManager, 
+							"List_Receipt",
+							(String) value);
+					wad.setVisible(true);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -193,7 +319,7 @@ public class RegisterWindow extends WindowArchetype{
 	    				+ columnNames[3] + ", "
 	    				+ columnNames[4] + ", " 
 	    				+ columnNames[5] + ", " 
-	    				+ columnNames[6] + ", Deleted_At",
+	    				+ columnNames[6] + ", List_Receipt.Deleted_At",
 	    				"List_Receipt", 
 	    				" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
 	    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "

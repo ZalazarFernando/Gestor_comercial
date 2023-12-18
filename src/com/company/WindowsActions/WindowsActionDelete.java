@@ -1,9 +1,14 @@
 package com.company.WindowsActions;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import com.company.DataBase.DataBaseManager;
 
@@ -35,14 +40,24 @@ public class WindowsActionDelete extends WindowsActionArchetype {
 
 	@Override
 	protected void addActionDoneBtn(JButton btn) {
-		databaseManager.deleteIndex(
-				databaseManager.createQuery(
-						"DELETE", 
-						"?", 
-						preTable,
-						"?"
-						),
-				Integer.valueOf(this.index)
-				);
+		btn.addActionListener( new ActionListener( ) {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				databaseManager.deleteIndex(
+						databaseManager.createQuery(
+								"DELETE", 
+								"?", 
+								preTable,
+								"?"
+								),
+						Integer.valueOf(index)
+						);
+				
+				JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		        currentFrame.dispose();
+			}
+			
+		});
 	}
 }
