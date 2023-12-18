@@ -29,14 +29,13 @@ public class WindowsActionArchetype extends JFrame{
 		this.databaseManager = databaseManager;
 		
 		preTable = table;
-		
-		setSize(400,200);
-		setTitle("");
-		setResizable(false);
-		
+		//setResizable(false);
+		Initialize();
 	}
 
 	protected void Initialize() {
+		setSize(400,200);
+		setTitle("");
 		createPanel();
 		createDoneBtn();
 		createCancelBtn();

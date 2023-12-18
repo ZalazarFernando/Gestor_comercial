@@ -150,55 +150,8 @@ public class RegisterWindow extends WindowArchetype{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<String> arrayNameColumns = databaseManager.getNameColumns("List_Receipt");
-				
-				String nameColumns = "";
-				for (int i = 0; i < arrayNameColumns.size(); i++) {
-				    String name = arrayNameColumns.get(i);
-
-				    if (name != null && !name.contains("ID")) {
-				        nameColumns += name;
-				        
-				        if (i < arrayNameColumns.size() - 1 && 
-				        		arrayNameColumns.get(i+1) != null) {
-				            nameColumns += ", ";
-				        }
-				    }
-				    
-				}
-				
-				ArrayList<String> secondArrayNameColumns = databaseManager.getNameColumns("Receipt");
-				
-				String secondColumns = "";
-				for (int i = 0; i < secondArrayNameColumns.size(); i++) {
-				    String name = secondArrayNameColumns.get(i);
-				    secondColumns += name;
-
-				    if (i < secondArrayNameColumns.size() - 1 &&
-				        secondArrayNameColumns.get(i + 1) != null) {
-				        secondColumns += ", ";
-				    }
-				}
-				
-				String[] words = {
-						"Description_List",
-						"ID_Employee",
-						"Customer"
-						};
-				
-				String[] secondWords = {
-						"Description_List",
-						"ID_List_Receipt"
-						};
-				
-				WindowsActionAddRegister waa = new WindowsActionAddRegister(
-						words,
-						secondWords,
-						databaseManager, 
-						"List_Receipt", 
-						nameColumns,
-						"Receipt",
-						secondColumns);
+				WindowsActionAddRegister waa = 
+						new WindowsActionAddRegister(databaseManager);
 				waa.setVisible(true);
 			}
 		});
