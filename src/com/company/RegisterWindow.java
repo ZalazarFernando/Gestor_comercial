@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
 import com.company.WindowsActions.WindowsActionAdd;
+import com.company.WindowsActions.WindowsActionAddRegister;
 import com.company.WindowsActions.WindowsActionDelete;
 import com.company.WindowsActions.WindowsActionModify;
 
@@ -190,7 +191,7 @@ public class RegisterWindow extends WindowArchetype{
 						"ID_List_Receipt"
 						};
 				
-				WindowsActionAdd waa = new WindowsActionAdd(
+				WindowsActionAddRegister waa = new WindowsActionAddRegister(
 						words,
 						secondWords,
 						databaseManager, 
