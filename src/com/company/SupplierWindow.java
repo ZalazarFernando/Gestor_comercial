@@ -220,7 +220,8 @@ JTable jTable = new JTable();
 	            "Lastname_Supplier",
 	            "Email_Address",
 	            "Number_Phone",
-	            "Type_Products"
+	            "Type_Products",
+	            "Deleted_At"
 	    };
 
 	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(
@@ -232,7 +233,8 @@ JTable jTable = new JTable();
 	    	    		+ columnNames[2] + ", " 
 	    	    		+ columnNames[3] + ", "
 	    	    		+ columnNames[4] + ", "
-	    	    		+ columnNames[5] + ", Deleted_At", 
+	    	    		+ columnNames[5] + ", "
+	    	    		+ columnNames[6], 
 	    				"Supplier", 
 	    				null)
 	    		);

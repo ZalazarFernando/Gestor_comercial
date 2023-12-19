@@ -42,8 +42,6 @@ public class RegisterWindow extends WindowArchetype{
 		leftPanel.add(panelSearch);
 	}
 
-
-
 	@Override
 	protected void createSpecificationTextBox() {
 		JPanel panelTextBox = new JPanel();
@@ -260,7 +258,8 @@ public class RegisterWindow extends WindowArchetype{
 	            "List_Receipt.Customer",
 	            "Receipt.Description_List",
 	            "Product.Name_Product",
-	            "Product.Final_Price"
+	            "Product.Final_Price",
+	            "List_Receipt.Deleted_At"
 	    };
 		
 	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(
@@ -273,7 +272,8 @@ public class RegisterWindow extends WindowArchetype{
 	    				+ columnNames[3] + ", "
 	    				+ columnNames[4] + ", " 
 	    				+ columnNames[5] + ", " 
-	    				+ columnNames[6] + ", List_Receipt.Deleted_At",
+	    				+ columnNames[6] + ", "
+	    				+ columnNames[7],
 	    				"List_Receipt", 
 	    				" INNER JOIN Receipt ON Receipt.ID_List_Receipt = List_Receipt.ID "
 	    				+ "INNER JOIN Product_x_Receipt ON Product_x_Receipt.ID_Receipt = Receipt.ID "
@@ -297,9 +297,21 @@ public class RegisterWindow extends WindowArchetype{
 	    Arrays.stream(columnNamesToTable).forEach(tableModel::addColumn);
 
 	    // Añadir filas al modelo
-	    infoAllEmployee.forEach(listOfFields -> {
+	    /*infoAllEmployee.forEach(listOfFields -> {
 	        Object[] rowData = listOfFields.toArray();
 	        tableModel.addRow(rowData);
+	    });*/
+	    
+	    infoAllEmployee.forEach(listOfFields -> {
+	    	
+	        // Obtener el índice de la columna "Deleted_At"
+	        int deletedAtIndex = Arrays.asList(columnNames).indexOf("List_Receipt.Deleted_At");
+	        
+	        // Verificar si la columna "Deleted_At" es "null"
+	        if (deletedAtIndex != -1 && listOfFields.get(deletedAtIndex) == "N/A") {
+	            Object[] rowData = listOfFields.toArray();
+	            tableModel.addRow(rowData);
+	        }
 	    });
 
 	    // Crear JTable con el modelo

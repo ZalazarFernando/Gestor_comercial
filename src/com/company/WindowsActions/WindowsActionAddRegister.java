@@ -16,11 +16,13 @@ import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import com.company.DataBase.DataBaseManager;
@@ -295,17 +297,9 @@ public class WindowsActionAddRegister extends WindowsActionArchetype{
 									"Product_x_Receipt", 
 									"ID_Product, ID_Receipt"));
 				}
-				
-				//Add Product x Receipt
-				
-				/*"Date",
-	            "Type",
-	            "Customer",
-	            "Description",
-	            "Name product",
-	            "Final price"*/
+				JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		        currentFrame.dispose();
 			}
-			
 		});;
 	}
 

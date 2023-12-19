@@ -261,7 +261,8 @@ public class EmployeeWindow extends WindowArchetype{
 	            "Email_Address",
 	            "Number_Phone",
 	            "Salary",
-	            "Rol"
+	            "Rol",
+	            "Deleted_At"
 	    };
 
 	    ArrayList<ArrayList> infoAllEmployee = this.databaseManager.getAllInfoTable(
@@ -274,7 +275,8 @@ public class EmployeeWindow extends WindowArchetype{
 	    				+ columnNames[3] + ", "
 	    				+ columnNames[4] + ", "
 	    				+ columnNames[5] + ", "
-	    				+ columnNames[6] + ", Deleted_At", 
+	    				+ columnNames[6] + ", "
+	    				+ columnNames[7], 
 	    				"Employee", 
 	    				queryExtra)
 	    		);
@@ -296,9 +298,21 @@ public class EmployeeWindow extends WindowArchetype{
 	    Arrays.stream(columnNamesToTable).forEach(tableModel::addColumn);
 
 	    // Añadir filas al modelo
-	    infoAllEmployee.forEach(listOfFields -> {
+	    /*infoAllEmployee.forEach(listOfFields -> {
 	        Object[] rowData = listOfFields.toArray();
 	        tableModel.addRow(rowData);
+	    });*/
+	    
+	    infoAllEmployee.forEach(listOfFields -> {
+	    	
+	        // Obtener el índice de la columna "Deleted_At"
+	        int deletedAtIndex = Arrays.asList(columnNames).indexOf("List_Receipt.Deleted_At");
+	        
+	        // Verificar si la columna "Deleted_At" es "null"
+	        if (deletedAtIndex != -1 && listOfFields.get(deletedAtIndex) == "N/A") {
+	            Object[] rowData = listOfFields.toArray();
+	            tableModel.addRow(rowData);
+	        }
 	    });
 
 	    // Crear JTable con el modelo

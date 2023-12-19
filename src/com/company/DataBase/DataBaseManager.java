@@ -222,7 +222,8 @@ public class DataBaseManager {
             	String[] getInfo = new String[data.length];
                 // Obtén los datos de cada fila
             	for (int i = 0; i < getInfo.length; i++) {
-            		getInfo[i] = resultSet.getString(data[i]);
+            	    String value = resultSet.getString(data[i]);
+            	    getInfo[i] = (value != null) ? value : "N/A";
             	}
             	
                 /*String id = resultSet.getString("ID");

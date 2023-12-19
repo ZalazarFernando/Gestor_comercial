@@ -2,8 +2,11 @@ package com.company.WindowsActions;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.company.DataBase.DataBaseManager;
 
@@ -92,7 +96,15 @@ public class WindowsActionArchetype extends JFrame{
 	}
 	
 	protected void addActionCancelBtn(JButton btn) {
-		
+		btn.addActionListener( new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		        currentFrame.dispose();
+			}
+			
+		});
 	}
 	
 	//method extra

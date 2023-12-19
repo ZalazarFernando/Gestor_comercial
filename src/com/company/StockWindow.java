@@ -237,7 +237,8 @@ public class StockWindow extends WindowArchetype{
 			    "Product.Final_Price",
 			    "Product.ID_Supplier",
 			    "Brand.Name_Brand",
-			    "Brand.Type_Products"
+			    "Brand.Type_Products",
+			    "Product.Deleted_At"
 			};
 
 
@@ -251,7 +252,8 @@ public class StockWindow extends WindowArchetype{
 	    				+ columnNames[3] + ", "
 	    				+ columnNames[4] + ", "
 	    				+ columnNames[5] + ", "
-	    				+ columnNames[6] + ", Deleted_At", 
+	    				+ columnNames[6] + ", "
+	    				+ columnNames[7], 
 	    				"Product", 
 	    				queryExtra)
 	    		);
@@ -273,9 +275,21 @@ public class StockWindow extends WindowArchetype{
 	    Arrays.stream(columnNamesToTable).forEach(tableModel::addColumn);
 
 	    // Añadir filas al modelo
-	    infoAllEmployee.forEach(listOfFields -> {
+	    /*infoAllEmployee.forEach(listOfFields -> {
 	        Object[] rowData = listOfFields.toArray();
 	        tableModel.addRow(rowData);
+	    });*/
+	    
+	    infoAllEmployee.forEach(listOfFields -> {
+	    	
+	        // Obtener el índice de la columna "Deleted_At"
+	        int deletedAtIndex = Arrays.asList(columnNames).indexOf("List_Receipt.Deleted_At");
+	        
+	        // Verificar si la columna "Deleted_At" es "null"
+	        if (deletedAtIndex != -1 && listOfFields.get(deletedAtIndex) == "N/A") {
+	            Object[] rowData = listOfFields.toArray();
+	            tableModel.addRow(rowData);
+	        }
 	    });
 
 	    // Crear JTable con el modelo
