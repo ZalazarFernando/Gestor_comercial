@@ -159,8 +159,6 @@ public class DataBaseManager {
 
             // Ejecutar la consulta
             int filasAfectadas = preparedStatement.executeUpdate();
-            
-            
         
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -237,9 +235,7 @@ public class DataBaseManager {
             	
             	ArrayList<String> info = new ArrayList<String>();
             	for (int i = 0; i < getInfo.length; i++) {
-            		if (resultSet.getObject("Deleted_At") == null) {
-            			info.add(getInfo[i]);
-            		}
+            		info.add(getInfo[i]);
             	}
             	
                 /*ArrayList<String> infoEmployee = new ArrayList<String>();

@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
@@ -94,37 +96,60 @@ public class WindowsActionAddRegister extends WindowsActionArchetype{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<String> fieldValues = new ArrayList<>();
-				 
+				Map<Integer,String> fieldValues = new HashMap<>();
 				for ( Entry<String, JTextField> entry : addTextBox.entrySet() ) {
-					if ( !entry.getKey().equals("Date") &&
-							!entry.getValue().getText().equals(entry.getKey())) {
-						
-						if (entry.getKey() == "Final price") {
-							System.out.println(entry.getValue().getText());
-						}
-						fieldValues.add(entry.getValue().getText());
-						System.out.println("hola");
-					} else {
-						LocalDateTime currentDateTime = LocalDateTime.now();
-
-				        // Formatear la fecha y hora como una cadena
-				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-				        String formattedDateTime = currentDateTime.format(formatter);
-				        
-						fieldValues.add(formattedDateTime);
-					}
+					String key = entry.getKey();
+				    JTextField textField = entry.getValue();
+				    
+				    switch (key) {
+				        case "Date":
+				            LocalDateTime currentDateTime = LocalDateTime.now();
+				            DateTimeFormatter formatter = 
+				            		DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				            fieldValues.put(0 ,currentDateTime.format(formatter));
+				            break;
+				        case "Type":
+				        	if (!textField.getText().equals(key)) {
+				                fieldValues.put(1 ,textField.getText());
+				            }
+				        	break;
+				        case "Customer":
+				        	if (!textField.getText().equals(key)) {
+				                fieldValues.put(2 ,textField.getText());
+				            }
+				        	break;
+				        case "Description":
+				        	if (!textField.getText().equals(key)) {
+				                fieldValues.put(3 ,textField.getText());
+				            }
+				        	break;
+				        case "Name product":
+				        	if (!textField.getText().equals(key)) {
+				                fieldValues.put(4 ,textField.getText());
+				            }
+				        	break;
+				        case "Final price":
+				        	if (!textField.getText().equals(key)) {
+				                fieldValues.put(5 ,textField.getText());
+				            }
+				        	break;
+				        default:
+				            break;
+				    }
 				}
-
-			    // Obtener el modelo de la JTable
+				ArrayList<String> auxString = new ArrayList<String>();
+				for (int i = 0; i < fieldValues.size(); i++ ) {
+					auxString.add(fieldValues.get(i));
+				}
+				
 			    JScrollPane scrollPane = getScrollPane();
 			    JTable jTable = getJTable(scrollPane);
 			    DefaultTableModel tableModel = (DefaultTableModel) jTable.getModel();
 
-			    // Añadir una nueva fila al modelo con la información recopilada
-			    tableModel.addRow(fieldValues.toArray());
+			    // Añadir fila
+			    tableModel.addRow(auxString.toArray());
 
-			    // Limpiar los JTextFields después de guardar la información
+			    // Limpiar los JTextFields
 			    clearTextFields();
 
 			    // Actualizar la JTable
@@ -143,16 +168,27 @@ public class WindowsActionAddRegister extends WindowsActionArchetype{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				// Obtener el modelo de la JTable
+		        JScrollPane scrollPane = getScrollPane();
+		        JTable jTable = getJTable(scrollPane);
+		        DefaultTableModel tableModel = (DefaultTableModel) jTable.getModel();
+
+		        // Obtener el índice de la fila seleccionada
+		        int selectedRowIndex = jTable.getSelectedRow();
+
+		        if (selectedRowIndex != -1) {
+		            // Eliminar la fila seleccionada del modelo
+		            tableModel.removeRow(selectedRowIndex);
+		        }
 			}
-			
 		});
 		
 		btnDownPanel.add(deleteBtn);
 	}
 
 	//method extra
-	// Método para obtener el JScrollPane desde el upPanel
+	
+	
 	private JScrollPane getScrollPane() {
 	    Component[] components = upPanel.getComponents();
 	    for (Component component : components) {
@@ -163,7 +199,116 @@ public class WindowsActionAddRegister extends WindowsActionArchetype{
 	    return null;
 	}
 
-	// Método para obtener la JTable desde el JScrollPane
+	@Override
+	protected void addActionDoneBtn(JButton btn) {
+		btn.addActionListener( new ActionListener() {
+			public String getNamesColums(String nameTable) {
+				ArrayList<String> arrayNameColumns = 
+						databaseManager.getNameColumns(nameTable);
+			
+			String nameColumns = "";
+			for (int i = 0; i < arrayNameColumns.size(); i++) {
+			    String name = arrayNameColumns.get(i);
+
+			    if (name != null && !name.contains("ID")) {
+			        nameColumns += name;
+			        
+			        if (i < arrayNameColumns.size() - 1 && 
+			        		arrayNameColumns.get(i+1) != null) {
+			            nameColumns += ", ";
+			        }
+			    }
+			}
+			
+			return nameColumns;
+			}
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> data = new ArrayList<String>();
+				
+				JScrollPane scrollPane = getScrollPane();
+		        JTable jTable = getJTable(scrollPane);
+		        DefaultTableModel tableModel = (DefaultTableModel) jTable.getModel();
+		        
+		        //Add Receipt list
+		        Object[] firstRowData = new Object[tableModel.getColumnCount()];
+		        for (int columnIndex = 0; columnIndex < tableModel.getColumnCount(); columnIndex++) {
+		            firstRowData[columnIndex] = tableModel.getValueAt(0, columnIndex);
+		        }
+		        
+				data.add(addTextBox.get("Description list").getText());
+				data.add("1");
+				data.add((String) firstRowData[0]);
+				data.add((String) firstRowData[1]);
+				data.add((String) firstRowData[2]);
+				data.add("30000"); //sumar todos los elementos de precio de la tabla
+				
+				databaseManager.setAllInfoTable(
+						data.toArray(new String[0]), 
+						databaseManager.createQuery(
+								"INSERT INTO", 
+								"?, ?, ?, ?, ?, ?", 
+								"List_Receipt", 
+								"Description_List, ID_Employee, "
+								+"Date_Receipt, Type_Receipt, Customer, Final_Price"));
+				
+				//add receipt
+				String[] auxID = {"ID"};
+				ArrayList<String> lastIDTable = databaseManager.getAllInfoTable(
+						auxID, 
+						"SELECT MAX(List_Receipt.ID) AS ID FROM List_Receipt").get(0);
+				
+				for (int rowIndex = 0; rowIndex < tableModel.getRowCount(); rowIndex++) {
+					
+					for (int columnIndex = 0; columnIndex < tableModel.getColumnCount(); columnIndex++) {
+			            firstRowData[columnIndex] = tableModel.getValueAt(rowIndex, columnIndex);
+			        }
+					
+					data.clear();
+					
+					data.add((String) firstRowData[3]);
+					data.add(lastIDTable.toArray(new String[0])[0]);
+					
+					databaseManager.setAllInfoTable(
+							data.toArray(new String[0]), 
+							databaseManager.createQuery(
+									"INSERT INTO", 
+									"?, ?", 
+									"Receipt", 
+									"Description_List, ID_List_Receipt"));
+					
+					//conectar con productos (cambiar para que obtenga un id válido)}
+					lastIDTable.clear() ;
+					lastIDTable = databaseManager.getAllInfoTable(
+							auxID, 
+							"SELECT MAX(Receipt.ID) AS ID FROM Receipt").get(0);
+					
+					data.clear();
+					
+					data.add("1");
+					data.add(lastIDTable.toArray(new String[0])[0]);
+					databaseManager.setAllInfoTable(
+							data.toArray(new String[0]), 
+							databaseManager.createQuery(
+									"INSERT INTO", 
+									"?, ?", 
+									"Product_x_Receipt", 
+									"ID_Product, ID_Receipt"));
+				}
+				
+				//Add Product x Receipt
+				
+				/*"Date",
+	            "Type",
+	            "Customer",
+	            "Description",
+	            "Name product",
+	            "Final price"*/
+			}
+			
+		});;
+	}
+
 	private JTable getJTable(JScrollPane scrollPane) {
 	    if (scrollPane != null) {
 	        return (JTable) scrollPane.getViewport().getView();
@@ -171,7 +316,6 @@ public class WindowsActionAddRegister extends WindowsActionArchetype{
 	    return null;
 	}
 
-	// Método para limpiar los JTextFields después de guardar la información
 	private void clearTextFields() {
 		for ( Entry<String, JTextField> entry : addTextBox.entrySet() ) {
 			entry.getValue().setText(entry.getKey());
