@@ -13,9 +13,6 @@ CREATE TABLE Employee(
     Deleted_At DATETIME
 );
 
-SELECT *
-FROM employee
-
 ALTER TABLE Employee
 ADD CONSTRAINT fk_employee_supervised
 FOREIGN KEY (ID_Supervised) REFERENCES Employee(ID);
@@ -43,12 +40,14 @@ CREATE TABLE Brand(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Name_Brand VARCHAR(20) NOT NULL,
     Type_Products VARCHAR(40) NOT NULL,
-    Description_Brand VARCHAR(100)
+    Description_Brand VARCHAR(100),
+    Deleted_At DATETIME
 );
 
 CREATE TABLE Supplier_x_Brand(
     ID_Supplier INT NOT NULL,
     ID_Brand INT NOT NULL,
+    Deleted_At DATETIME,
     PRIMARY KEY(ID_Supplier, ID_Brand),
     FOREIGN KEY (ID_Supplier) REFERENCES Supplier(ID),
     FOREIGN KEY (ID_Brand) REFERENCES Brand(ID)
@@ -67,6 +66,7 @@ CREATE TABLE Product(
 CREATE TABLE Product_x_Brand(
     ID_Product INT NOT NULL,
     ID_Brand INT NOT NULL,
+    Deleted_At DATETIME,
     PRIMARY KEY(ID_Product, ID_Brand),
     FOREIGN KEY (ID_Product) REFERENCES Product(ID),
     FOREIGN KEY (ID_Brand) REFERENCES Brand(ID)
@@ -76,13 +76,13 @@ CREATE TABLE List_Receipt(
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Description_List VARCHAR(100) NOT NULL,
     ID_Employee INT NOT NULL,
+    Date_Receipt DATETIME,
+    Type_Receipt VARCHAR(20),
     Customer VARCHAR(20),
+    Final_Price INT,
     Deleted_At DATETIME,
     FOREIGN KEY (ID_Employee) REFERENCES Employee(ID)
 )
-
-SELECT *
-FROM List_Receipt
 
 CREATE TABLE Receipt(
     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -95,7 +95,11 @@ CREATE TABLE Receipt(
 CREATE TABLE Product_x_Receipt(
     ID_Product INT NOT NULL,
     ID_Receipt INT NOT NULL,
+    Deleted_At DATETIME,
     PRIMARY KEY(ID_Product, ID_Receipt),
     FOREIGN KEY (ID_Product) REFERENCES Product(ID),
     FOREIGN KEY (ID_Receipt) REFERENCES Receipt(ID)
 );
+
+SELECT *
+FROM List_Receipt
